@@ -10,7 +10,6 @@ var hbs = require('hbs');
 
 var index = require('./routes/index');
 var clientes = require('./routes/clientes');
-var users = require('./routes/users');
 
 var app = express();
 
@@ -31,8 +30,7 @@ app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/', clientes);
-app.use('/users', users);
+app.use('/clientes', clientes);
 
 // se quisermos forçar o layout.hbs com outro nome...
 // app.set('view options', { layout: 'other' });
