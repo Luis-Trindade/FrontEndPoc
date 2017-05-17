@@ -68,8 +68,29 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
-
+{{#if temTabelas}}
+<!-- DataTables JavaScript -->
+<script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+<script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+{{/if}}
 <script>
+{{#if temTabelas}}
+    $(document).ready(function() {
+        $('#{{idtabela}}').DataTable({
+            searching: false,
+            paging: true,
+            lengthChange: false,
+            pageLength: 15,
+            responsive: true
+        });
+        $('tr').on('dblclick', function() {
+            var table = $('#{{idtabela}}').DataTable();
+            console.log(table.row(this).data());
+            window.location.href = "{{ tabledblhref }}"
+        });
+    });
+{{/if}}
     function changeCSS(cssFile, cssLinkIndex) {
 
         var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);

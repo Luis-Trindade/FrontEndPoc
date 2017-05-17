@@ -18,7 +18,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <ul class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li class="active">Clientes</li>
                 </ul>
             </div>
@@ -27,12 +27,11 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-clientes">
                     <thead>
                     <tr>
-                        <th>Número</th>
+                        <th>Código</th>
                         <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
                         <th>NIF</th>
-                        <th>Morada</th>
-                        <th>Particular/Empresa</th>
-                        <th>Tipo</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,10 +39,9 @@
                         <tr class="odd gradeX">
                             <td>{{ numero }}</td>
                             <td>{{ nome }}</td>
+                            <td>{{ email }}</td>
+                            <td>{{ telefone }}</td>
                             <td>{{ nif }}</td>
-                            <td>{{ morada }}</td>
-                            <td class="center">{{ clitcli }}</td>
-                            <td class="center">{{ tipo }}</td>
                         </tr>
                     {{/each}}
                     <!-- deixei isto aqui para se perceber para que serve o odd e even e os gradeC/X
