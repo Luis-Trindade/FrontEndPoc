@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var http = require('http');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
@@ -10,6 +11,13 @@ router.get('/', function(req, res, next) {
         temTabelas: "Sim",
         idtabela: "dataTables-clientes",
         tabledblhref: "clientesdet.html",
+
+        restricoes: [
+            { codigo: "Portugueses" },
+            { codigo: "Estrangeiros" },
+            { codigo: "Particulares" },
+            { codigo: "Empresas" }
+        ],
         clientes: [
 
             { numero: "103746276", nome: "ATLANTICO A VISTA - SOCIEDADE DE CONSTRUCOES LDA", email: "", telefone: "", nif: "501514228" },
@@ -59,7 +67,33 @@ router.get('/', function(req, res, next) {
         ]
     };
 
-    res.render('clientes', context);
+    var paises = '';
+    http.get('http://apaxsys004:5113/lease/api/pais/short', function(response){
+        var contentType = response.headers['content-type'];
+
+        if (response.statusCode !== 200) {
+            console.log("StatusCODE: " + response.statusCode);
+            return;
+        } else if (!/^application\/json/.test(contentType)) {
+            console.log("Erro contentType: "+ contentType);
+            return;
+        }
+        response.setEncoding('utf8');
+        var rawData = '';
+        response.on('data', function(chunk) { rawData += chunk; });
+        response.on('end', function(){
+            try {
+                paises = JSON.parse(rawData);
+                context.paises = paises;
+                res.render('clientes', context);
+            } catch (e) {
+                console.error(e.message);
+            }
+        });
+    }).on('error', function(e) {
+        console.error("Got error: "+ e.message);
+    });
+
 });
 
 module.exports = router;
