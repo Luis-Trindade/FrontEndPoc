@@ -10,6 +10,8 @@ var hbs = require('hbs');
 
 var index = require('./routes/index');
 var clientes = require('./routes/clientes');
+var cliente = require('./routes/cliente')
+var simul = require('./routes/simul');
 
 var app = express();
 
@@ -31,6 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/clientes', clientes);
+app.use('/cliente',cliente);
+app.use('/simul',simul);
+
 
 // se quisermos forçar o layout.hbs com outro nome...
 // app.set('view options', { layout: 'other' });

@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
         modal_id: "adicionaCliente",
         temTabelas: "Sim",
         idtabela: "dataTables-clientes",
-        tabledblhref: "clientesdet.html",
+        tabledblhref: "cliente",
         clientes: [
 
             { numero: "103746276", nome: "ATLANTICO A VISTA - SOCIEDADE DE CONSTRUCOES LDA", email: "", telefone: "", nif: "501514228" },
