@@ -10,6 +10,7 @@ var hbs = require('hbs');
 
 var index = require('./routes/index');
 var clientes = require('./routes/clientes');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -21,7 +22,7 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '/public/img', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/clientes', clientes);
+app.use('/login', login);
 
 // se quisermos forçar o layout.hbs com outro nome...
 // app.set('view options', { layout: 'other' });
