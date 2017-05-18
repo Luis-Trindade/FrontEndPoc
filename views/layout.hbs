@@ -74,6 +74,14 @@
 <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
 <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
 {{/if}}
+
+{{#if temGraficos}}
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <script src="../js/morris-{{ ficheiro_graficos }}.js"></script>
+{{/if}}
+
 <script>
 {{#if temTabelas}}
     $(document).ready(function() {

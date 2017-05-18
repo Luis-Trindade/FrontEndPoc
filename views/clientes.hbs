@@ -24,6 +24,18 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
+                <div class="form-inline row">
+                    <div class="form-group">
+                        <label for="search">Pesquisa</label>
+                        <input class="form-control" id="search">
+                        <label for="cod_restricao">Restrição</label>
+                        <select class="form-control" id="cod_restricao">
+                        {{#each restricoes}}
+                            <option>{{ codigo }}</option>
+                        {{/each}}
+                        </select>
+                    </div>
+                </div>
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-clientes">
                     <thead>
                     <tr>
