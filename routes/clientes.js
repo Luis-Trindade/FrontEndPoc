@@ -6,7 +6,7 @@ var http = require('http');
 router.get('/', function(req, res, next) {
 
     var context = {
-        modal_title: "Adicionar Clientes",
+        modal_title: "Modificar Clientes",
         modal_id: "adicionaCliente",
         temTabelas: "Sim",
         idtabela: "dataTables-clientes",
