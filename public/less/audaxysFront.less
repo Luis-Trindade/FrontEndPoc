@@ -1,0 +1,127 @@
+@cor-audaxys: #548abb;
+
+// Global Styles
+.login-background {
+  background-color: #2F2727;
+}
+
+.sidebar .fa.arrow:before {
+  content: "\f105"; /* JCV seta na sidebar apontar para a esquerda */
+}
+
+/* JCV - mete as modais ao centro do ecrã */
+.modal {
+  text-align: center;
+  padding: 0!important;
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px; /* Adjusts for spacing */
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.navbar {
+  background-color: @cor-audaxys;
+}
+
+.navbar-brand {
+  padding-top: 10px;
+}
+
+.dropdown-toggle {
+  .fa-user {
+    color: white;
+  }
+  .fa-caret-down {
+    color: white;
+  }
+}
+.nav .open > a {
+  background-color: @cor-audaxys;
+  &:hover {
+    background-color: @cor-audaxys;
+  }
+  &:focus {
+    background-color: @cor-audaxys;
+  }
+}
+
+.nav {
+  > li {
+    > a:hover {
+      background-color: @cor-audaxys;
+    }
+    > a.li-nohover:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+#modal-header-cores(@color-modal: #5cb85c) {
+  color:#fff;
+  padding:9px 15px;
+  border-bottom:1px solid #eee;
+  background-color: @color-modal;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.modal-header-success {
+  #modal-header-cores(#5cb85c)
+}
+.modal-header-warning {
+  #modal-header-cores(#f0ad4e)
+}
+.modal-header-danger {
+  #modal-header-cores(#d9534f)
+}
+.modal-header-info {
+  #modal-header-cores(#5bc0de)
+}
+.modal-header-primary {
+  #modal-header-cores(@cor-audaxys)
+}
+/* icones dentro de inputs */
+.fa.form-control-feedback {
+  line-height: 34px; /* @input-height-base; */
+}
+.input-sm ~ .fa.form-control-feedback {
+  line-height: 30px; /* @input-height-base; */
+}
+.input-lg ~ .fa.form-control-feedback {
+  line-height: 46px; /* @input-height-base; */
+}
+
+.has-feedback-left {
+  input.form-control {
+    padding-left: 34px; /* @input-height-base; */
+    padding-right: 12px; /* @padding-base-horizontal */
+  }
+  .form-control-feedback {
+    left: 0;
+  }
+  input.input-sm {
+    padding-left: 30px;  /* @input-height-small; */
+  }
+  input.input-lg {
+    padding-left: 46px; /* @input-height-large; */
+  }
+}
+
+.form-horizontal .has-feedback-left .form-control-feedback {
+  left: 12px; /* @grid-gutter-width / 2 */
+}
+
+

@@ -1,9 +1,14 @@
 var express = require('express');
+var async = require('async');
+var restRequest = require('../modules/httpRestRequest');
 var router = express.Router();
 
-var http = require('http');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    var restUrlListagem = 'http://apaxsys004:5113/lease/api/restricaoLst?listagem=CLIENT';
+    var restUrlPais = 'http://apaxsys004:5113/lease/api/pais/short';
+    var restUrlClientes = 'http://apaxsys004:5113/lease/api/client/short';
 
     var context = {
         modal_title: "Adicionar Clientes",
@@ -11,13 +16,16 @@ router.get('/', function(req, res, next) {
         temTabelas: "Sim",
         idtabela: "dataTables-clientes",
         tabledblhref: "cliente",
-        restricoes: [
+        dataTableUrl: "/api/clientes",
+        tblColumns: [ "clinum", "clinom", "clitlx", "clitel", "clinfis" ],
+        cod_select: "cod_restricao"
+        /*restricoes: [
             { codigo: "Portugueses" },
             { codigo: "Estrangeiros" },
             { codigo: "Particulares" },
             { codigo: "Empresas" }
-        ],
-        clientes: [
+        ],*/
+        /* clientes: [
 
             { numero: "103746276", nome: "ATLANTICO A VISTA - SOCIEDADE DE CONSTRUCOES LDA", email: "", telefone: "", nif: "501514228" },
             { numero: "103279383", nome: "BAVIERA COMERCIO AUTOMOVEIS SA", email: "", telefone: "232480810", nif: "500003165" },
@@ -63,35 +71,39 @@ router.get('/', function(req, res, next) {
             { numero: "124023", nome: "CONTAS E CONTOS UNIPESSOAL LDA", email: "", telefone: "212349010", nif: "509375154"}
 
 
-        ]
+        ]*/
     };
 
-    var paises = '';
-    http.get('http://apaxsys004:5113/lease/api/pais/short', function(response){
-        var contentType = response.headers['content-type'];
+    async.parallel([
+        function(callback) {
+            restRequest.getRestRequest(restUrlListagem, function (err, restricao) {
+               if(err) { console.log(err); callback(true); return; }
+                callback(false, restricao);
+            });
+        },
+        function(callback) {
+            restRequest.getRestRequest(restUrlPais, function (err, paises) {
+                if(err) { console.log(err); callback(true); return; }
+               callback(false, paises);
+            });
+        } /* ,
+        function(callback) {
+            restRequest.getRestRequest(restUrlClientes, function (err, restricao) {
+                if(err) { console.log(err); callback(true); return; }
+                callback(false, restricao);
+            });
+        }*/
+    ],
+    function(err, results) {
+        if(err) { console.log(err); res.send(500,"Server Error"); return; }
+        context.restricoes = results[0];
+        context.paises = results[1];
+        /* context.clientes = results[2]; */
+        res.render('clientes', context);
+    }
+    );
 
-        if (response.statusCode !== 200) {
-            console.log("StatusCODE: " + response.statusCode);
-            return;
-        } else if (!/^application\/json/.test(contentType)) {
-            console.log("Erro contentType: "+ contentType);
-            return;
-        }
-        response.setEncoding('utf8');
-        var rawData = '';
-        response.on('data', function(chunk) { rawData += chunk; });
-        response.on('end', function(){
-            try {
-                paises = JSON.parse(rawData);
-                context.paises = paises;
-                res.render('clientes', context);
-            } catch (e) {
-                console.error(e.message);
-            }
-        });
-    }).on('error', function(e) {
-        console.error("Got error: "+ e.message);
-    });
+
 
 });
 

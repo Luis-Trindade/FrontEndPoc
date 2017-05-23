@@ -13,6 +13,8 @@ var clientes = require('./routes/clientes');
 var cliente = require('./routes/cliente')
 var simul = require('./routes/simul');
 var login = require('./routes/login');
+var logout = require('./routes/logout');
+var apiclientes = require('./routes/apiclientes');
 
 var app = express();
 
@@ -38,6 +40,10 @@ app.use('/cliente',cliente);
 app.use('/simul',simul);
 
 app.use('/login', login);
+app.use('/logout',logout);
+
+// para datatables api -> faz o bridge para o lease api
+app.use('/api/clientes', apiclientes);
 
 // se quisermos forçar o layout.hbs com outro nome...
 // app.set('view options', { layout: 'other' });

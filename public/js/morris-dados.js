@@ -37,7 +37,7 @@ Morris.Bar({
     }],
     xkey: 'y',
     ykeys: ['a', 'b'],
-    labels: ['IVA', 'Selo'],
+    labels: ['Propostas', 'Contratos'],
     hideHover: 'auto',
     resize: true
 });

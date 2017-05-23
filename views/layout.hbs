@@ -20,6 +20,8 @@
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
+    <!-- O nosso CSS -->
+    <link href="../stylesheets/audaxysFront.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -68,6 +70,7 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
+
 {{#if temTabelas}}
 <!-- DataTables JavaScript -->
 <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
@@ -85,18 +88,41 @@
 <script>
 {{#if temTabelas}}
     $(document).ready(function() {
-        $('#{{idtabela}}').DataTable({
-            searching: false,
+        var table = $('#{{idtabela}}').DataTable({
+            serverSide: true,
+            ajax: {
+                url: '{{ dataTableUrl }}',
+                type: 'GET',
+                "data": function ( d ) {
+                    var e = document.getElementById('{{ cod_select }}');
+                    d.restricao = e.options[e.selectedIndex].text;
+                }
+            },
+            columns: [
+                {{#each tblColumns }}
+                { data: '{{ this }}' {{#unless @first }} , defaultContent: '' {{/unless}} } {{#unless @last}}, {{/unless}}
+                {{/each}}
+            ],
+            searching: true,
             paging: true,
             lengthChange: false,
             pageLength: 15,
-            responsive: true
+            responsive: true,
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese.json'
+            },
+            dom: '<"toolbar">frtip',
+            initComplete: function(){
+                $("div.toolbar").prepend($("#toolbar_html"));
+            }
         });
-        $('tr').on('dblclick', function() {
+
+        $('#{{idtabela}} tbody').on('dblclick', 'tr', function () {
             var table = $('#{{idtabela}}').DataTable();
-            console.log(table.row(this).data());
-            window.location.href = "{{ tabledblhref }}"
-        });
+            console.log(table.row(this).data().clinum);
+            window.location.href = "{{ tabledblhref }}/" + table.row(this).data().clinum
+        } );
+
     });
 {{/if}}
     function changeCSS(cssFile, cssLinkIndex) {
