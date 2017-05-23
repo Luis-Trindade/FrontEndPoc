@@ -6,7 +6,16 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:numcliente', function(req, res, next) {
+    console.log('Request Id:', req.params.numcliente);
+
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        "address": inputAddress
+    }, function(results) {
+        console.log(results[0].geometry.location); //LatLng
+    });
+
     var context = {
         modal_title: "Modificar Clientes",
         modal_id: "modificaCliente",
