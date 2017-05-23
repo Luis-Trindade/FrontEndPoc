@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     var restUrlClientes = 'http://apaxsys004:5113/lease/api/client/short';
 
     var context = {
-        modal_title: "Modificar Clientes",
+        modal_title: "Adicionar Cliente",
         modal_id: "adicionaCliente",
         temTabelas: "Sim",
         idtabela: "dataTables-clientes",

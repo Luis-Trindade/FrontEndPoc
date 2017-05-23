@@ -144,5 +144,9 @@
   left: 12px;
   /* @grid-gutter-width / 2 */
 }
+.panel-primary > .panel-heading-audaxys {
+  background: #548abb;
+  color: #fff;
+}
 
 div.toolbar { float:left; width:20% }
