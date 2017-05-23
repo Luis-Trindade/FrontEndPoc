@@ -1,51 +1,74 @@
+{{> modal_clientes }}
+
 <div class="row">
-    <div class="col-md-8 col-lg-8">
+    <div class="col-md-7 col-lg-7">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Cliente
+                <h2>Cliente
+                    <button type="button" class="btn btn-success btn-circle" data-toggle="modal"
+                            data-target="#{{ modal_id }}">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <span class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-caret-down" style="color: black;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#">Opção 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Etcs</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-trash"></i> Delete</a>
+                            </li>
+                        </ul>
+                    </span><!-- /.dropdown -->
+                </h2>
             </div>
             <div class="panel-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-3 col-lg-3">
+                        <div class="col-md-4 col-lg-4">
                             <p>Nome</p>
                         </div>
-                        <div class="col-md-5 col-lg-5">
-                            <p>{{clinom}}</p>
+                        <div class="col-md-8 col-lg-8">
+                            <p>{{cliente.clinom}}</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3 col-lg-3">
+                        <div class="col-md-4 col-lg-4">
                             <p>Web</p>
                         </div>
-                        <div class="col-md-5 col-lg-5">
-                            <p>{{cliwww}}</p>
+                        <div class="col-md-8 col-lg-8">
+                            <a href="http://{{cliente.cliwww}}">{{cliente.cliwww}}</a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3 col-lg-3">
+                        <div class="col-md-4 col-lg-4">
                             <p>Email</p>
                         </div>
-                        <div class="col-md-5 col-lg-5">
-                            <p>{{clitlx}}</p>
+                        <div class="col-md-8 col-lg-8">
+                            <a href="mailto:{{cliente.clitlx}}">{{cliente.clitlx}}</a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3 col-lg-3">
+                        <div class="col-md-4 col-lg-4">
                             <p>Telefone</p>
                         </div>
-                        <div class="col-md-5 col-lg-5">
-                            <p>{{clitel}}</p>
+                        <div class="col-md-8 col-lg-8">
+                            <p>{{cliente.clitel}}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 col-lg-4">
-        <div class="panel panel-primary">
+    <div class="col-md-5 col-lg-5">
+        <div class="panel panel-default">
             <div class="panel-heading">
-                Localização
+                <h2>Localização</h2>
             </div>
             <div class="panel-body">
                 <img src="../img/Mapa.PNG" width="100%"/>
@@ -55,22 +78,22 @@
 </div>
 <div class="row">
     <div class="col-md-6 col-lg-6">
-        <div class="panel panel-green">
-            <div class="panel-heading" style="text-align: center">
-                <h1>Contratos</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Contratos</h2>
             </div>
             <div class="panel-body">
-                <img src="../img/Mapa.PNG" width="100%"/>
+                <img src="../img/Tabela.PNG" width="100%"/>
             </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-6">
-        <div class="panel panel-green">
-            <div class="panel-heading" style="text-align: center">
-                <h1>Propostas</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Propostas</h2>
             </div>
             <div class="panel-body">
-                <img src="../img/Mapa.PNG" width="100%"/>
+                <img src="../img/Grafico.PNG" width="100%"/>
             </div>
         </div>
     </div>
