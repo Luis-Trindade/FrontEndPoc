@@ -20,11 +20,18 @@ exports.putRestRequest = function(hostUrl, processResult){
 }
 
 // TODO: tem de se fazer
-exports.postRestRequest = function(hostUrl, processResult){
-    request.post({ method: 'POST', uri: hostUrl }, function(err, response, body) {
+exports.postRestRequest = function(hostUrl, requestData, processResult){
+    request({
+            method: 'POST',
+            uri: hostUrl,
+            headers: {
+                "content-type": "application/json",
+            },
+            json: requestData
+    }, function(err, response, body) {
         // JSON body
         if(err) { console.log(err); processResult(true); return; }
-        var obj = JSON.parse(body);
+        var obj = "OK"//JSON.parse(body);
         processResult(false, obj);
     });
 }

@@ -1,12 +1,13 @@
 var express = require('express');
 var restRequest = require('../modules/httpRestRequest');
+var cfg = require('../modules/config');
 var async = require('async');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    var restUrlClientes = 'http://apaxsys004:5113/lease/api/client/short';
-    var countUrlClientes = 'http://apaxsys004:5113/lease/api/client/count';
+    var restUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/short';
+    var countUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/count';
 
     restUrlClientes = restUrlClientes + '?';
     if ( req.query.start > 0 ) {
@@ -17,7 +18,7 @@ router.get('/', function(req, res, next) {
         restUrlClientes = restUrlClientes + '&criterio=' + req.query.search.value;
     }
 
-    if(req.query.restricao ){
+    if(req.query.restricao != "--" ){
         restUrlClientes = restUrlClientes + '&restricao=' + req.query.restricao;
     }
     async.parallel([

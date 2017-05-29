@@ -8,80 +8,79 @@
                 <h4 class="modal-title">{{ modal_title }}</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" name="modal_form" id="modal_form" action="/{{ submit_action }}" method="{{ submit_method }}">
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Código</label>
-                        <div class="col-md-3 col-sm-3"><input class="form-control" id="clinum"></div>
+                        <div class="col-md-3 col-sm-3"><input class="form-control" id="clinum" disabled></div>
 
                         <div class="col-md-7 col-sm-7">
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Empresa
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio" name="cliemppart">
+                            <input class="col-md-2 col-sm-3" type="radio" name="empresa">
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Particular
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio" name="cliemppart">
+                            <input class="col-md-2 col-sm-3" type="radio" name="particular">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2" for="nacionalidade">Nacionalidade</label>
                         <div class="col-md-3 col-sm-3">
-                            <select class="form-control" id="nacionalidade">
+                            <select class="form-control" id="nacionalidade" name="clipais">
                                 {{#each paises}}
                                     <option value="{{ codigo }}">{{ nomepais }}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <label class="control-label col-md-2 col-sm-2">NIF</label>
-                        <div class="col-md-3 col-sm-4"><input class="form-control" id="nif"></div>
+                        <div class="col-md-3 col-sm-4"><input class="form-control" id="nif" name="clinfis"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Nome</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="nome"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="nome" name="clinom" required></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Morada</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="morada"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="morada" name="climor"></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-8 col-md-offset-2 col-sm-9 col-sm-offset-2"><input class="form-control" id="morada2"></div>
+                        <div class="col-md-8 col-md-offset-2 col-sm-9 col-sm-offset-2"><input class="form-control" id="morada2" name="climor2"></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-2 col-sm-2 col-sm-offset-2 col-xs-3"><input class="form-control" id="codpostal1"></div>
-                        <div class="col-md-1 col-sm-2 col-xs-3"><input class="form-control" id="codpostal2"></div>
-                        <div class="col-md-5 col-sm-5 col-xs-6"><input class="form-control" id="localidade"></div>
+                        <div class="col-md-offset-2 col-md-2 col-sm-2 col-sm-offset-2 col-xs-3"><input class="form-control" id="codpostal1" name="clicop"></div>
+                        <div class="col-md-1 col-sm-2 col-xs-3"><input class="form-control" id="codpostal2" name="clicop2"></div>
+                        <div class="col-md-5 col-sm-5 col-xs-6"><input class="form-control" id="localidade" name="cliloc"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Email</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="email"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" type="email" id="email" name="cliwww"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">WebSite</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="website"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" type="url" id="website" name="clitlx"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Telefone</label>
-                        <div class="col-md-3 col-sm-3"><input class="form-control" id="telefone"></div>
+                        <div class="col-md-3 col-sm-3"><input class="form-control" id="telefone" name="clitel"></div>
                         <label class="control-label col-md-2 col-sm-2">Nascido a</label>
-                        <div class="col-md-3 col-sm-4"><input class="form-control" type="date" id="datanascimento"></div>
+                        <div class="col-md-3 col-sm-4"><input class="form-control" type="date" id="datanascimento" name="datanascimento"></div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-1 col-sm-1"></div>
-                        <label style="margin-left:10px" class="checkbox-inline control-label col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2 col-xs-12" id="tipoiva"><input type="checkbox" value="">Sucursal</label>
-                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="tipoiva"><input type="checkbox" value="">Iva caixa</label>
-                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="tipoiva"><input type="checkbox" value="">Cli Banco</label>
+                        <label style="margin-left:10px" class="checkbox-inline control-label col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2 col-xs-12" id="cliehsucursal"><input type="checkbox" value="S" name="cliehsucursal">Sucursal</label>
+                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="cliivacaixa"><input type="checkbox" value="S" name="cliivacaixa">Iva caixa</label>
+                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="clibanco"><input type="checkbox" value="S" name="clibanco">Cli Banco</label>
                     </div>
                 </form>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">Guardar</button>
+                <button type="submit" id="modal_submit" class="btn btn-info" data-dismiss="modal">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
 </div>
-   

@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var lessMiddleware = require('less-middleware');
+var auth = require("./modules/authPassport")();
 
 var hbs = require('hbs');
 
@@ -34,9 +35,12 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(auth.initialize());
+
 app.use('/', index);
 app.use('/clientes', clientes);
 app.use('/cliente',cliente);
+//app.use('/simul',auth.authenticate(),simul);
 app.use('/simul',simul);
 
 app.use('/login', login);

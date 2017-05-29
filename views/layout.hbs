@@ -61,8 +61,9 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="../vendor/jquery/jquery.min.js"></script>
 
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -121,11 +122,12 @@
         $('#{{idtabela}} tbody').on('dblclick', 'tr', function () {
             var table = $('#{{idtabela}}').DataTable();
             console.log(table.row(this).data().clinum);
-            window.location.href = "{{ tabledblhref }}/" + table.row(this).data().clinum
+            window.location = "{{ tabledblhref }}/" + table.row(this).data().clinum
         } );
 
     });
 {{/if}}
+
     function changeCSS(cssFile, cssLinkIndex) {
 
         var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
@@ -138,6 +140,40 @@
         document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
     }
 </script>
+{{#if temModal}}
+    <script>
+        $(document).ready(function() {
+            // bind 'myForm' and provide a simple callback function
+            $('#modal_submit').click(function () {
+                var frm = $('#modal_form');
+                var isvalid = frm[0].checkValidity();
+                if (isvalid) {
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: frm.attr('action'),
+                        data: frm.serialize(),
+                        cache: false,
+                        success: function (result) {
+                            $('#errmsg-header').html("Sucesso");
+                            $('#errmsg-usermsg').html("A operação foi concluida com sucesso");
+                            $('#errmsg-button').toggleClass('btn-danger btn-success');
+                            $('#errmsg-button').toggleClass('btn-info btn-success');
+                            $('#errmsg-dialog').modal('show');
+                        },
+                        error: function () {
+                            $('#errmsg-header').html("Erro");
+                            $('#errmsg-usermsg').html("Houve um erro na operação");
+                            $('#errmsg-button').toggleClass('btn-success btn-danger');
+                            $('#errmsg-button').toggleClass('btn-info btn-danger');
+                            $('#errmsg-dialog').modal('show');
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+{{/if}}
 
 </body>
 
