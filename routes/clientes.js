@@ -83,11 +83,8 @@ router.post('/', function(req, res, next) {
     }
 
     registoCliente.client = client;
-    if(req.body.empresa == 'on') {
-        client.clitcli = "E";
-    }
-    if(req.body.particular == 'on'){
-        client.clitcli = "P";
+    client.clitcli = req.body.clitcli;
+    if(req.body.clitcli == 'P'){
         restocliente.datanascimento = req.body.datanascimento;
         registoCliente.restocliente = restocliente;
     }

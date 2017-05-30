@@ -7,7 +7,7 @@ var Strategy = passportJWT.Strategy;
 
 var params = {
     secretOrKey: cfg.jwtSecret,
-    jwtFromRequest: ExtractJwt.fromAuthHeader()
+    jwtFromRequest: ExtractJwt.fromUrlQueryParameter("auth")
 };
 
 
@@ -16,7 +16,7 @@ module.exports = function() {
     var strategy = new Strategy(params, function(payload, done) {
         var user = users.getUserByName(payload.username, function(err,exists){
             if(exists){
-                return done(null, {username: user.username});
+                return done(null, {username: payload.username});
             } else {
                 return done(new Error("User not found"), null);
             }

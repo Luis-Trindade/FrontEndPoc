@@ -15,8 +15,9 @@
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
+    <!--
     <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
+    -->
     <!-- Custom CSS -->
     <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
 
@@ -36,8 +37,8 @@
 </head>
 
 <body class="login-background" >
-<!-- Modal Adicionar Cliente-->
-
+<!-- Modal Erros-->
+{{> modal_dialog }}
 <div id="login" class="modal show" role="dialog">
     <div class="modal-dialog modal-sm">
         <!-- Modal content-->
@@ -48,32 +49,32 @@
                 <h4 class="modal-title ">Faça o seu Login</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" name="login_form" action="/login" method="post">
+                <form class="form-horizontal" name="login_form" id="login_form" action="/login" method="post" data-parsley-validate="">
                     <div class="form-group"></div> <!-- espaçamento -->
                     <div class="form-group has-feedback has-feedback-left">
                         <div class="col-md-10 col-md-offset-1">
-                            <input class="form-control" id="username" name="name" placeholder="Utilizador">
+                            <input class="form-control" id="username" name="name" placeholder="Utilizador" data-parsley-required="true">
                             <i class="glyphicon glyphicon-user form-control-feedback"></i>
                         </div>
                     </div>
                     <div class="form-group has-feedback has-feedback-left">
                         <!--<label class="control-label col-md-3" for="password">Password</label>-->
                         <div class="col-md-10 col-md-offset-1">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" data-parsley-required="true">
                             <i class="glyphicon glyphicon-lock form-control-feedback"></i>
                         </div>
                     </div>
                     <div class="form-group">
                         <span class="col-md-1 col-sm-1 col-xs-1"></span>
                         <label class="checkbox-inline control-label" id="remember">
-                            <div class="col-md-1 col-sm-1 col-xs-1"><input type="checkbox" value=""></div>Lembrar-me?</label>
+                            <div class="col-md-1 col-sm-1 col-xs-1"><input type="checkbox" name="remind" value=""></div>Lembrar-me?</label>
                     </div>
 
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" onClick="login_form.submit();" class="btn btn-info col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal" >Entrar</button>
+                <button type="submit" id="login_submit" class="btn btn-info col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal" >Entrar</button>
             </div>
         </div>
 
@@ -85,22 +86,43 @@
 
 <!-- jQuery -->
 <script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/parsley/parsley.min.js"></script>
+<script src="../vendor/parsley/pt-pt.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
+<!--
 <script src="../dist/js/sb-admin-2.js"></script>
-
+-->
 <script>
-    function doLogin(){
+    $(document).ready(function() {
+        var frm = $('#login_form');
 
-        var bodyValues = {
-                    username : $('#username').val(),
-                    password : $('#password').val()
-        };
-        alert("Username: " + username + " Password: "+ password);
-    }
+        $('#login_submit').click(function () {
+
+                $.ajax({
+                    type: 'POST',
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    cache: false,
+                    success: function (result) {
+                        sessionStorage.setItem('token', result.token);
+                        window.location = "/?auth=" + result.token;
+                    },
+                    error: function () {
+                        var newError = "erro-auth";
+                        var userNameField = $("#username").parsley();
+                        var passwordField = $("#password").parsley();
+                        userNameField.removeError(newError);
+                        passwordField.removeError(newError);
+                        userNameField.addError(newError,{message: ' '});
+                        passwordField.addError(newError,{message: 'Utilizador ou password inválida.'});
+                    }
+                });
+        });
+    });
 </script>
 
 </body>

@@ -4,7 +4,7 @@ module.exports = {
     lease_rest_host: 'apaxsys004',
     lease_rest_port: 5113,
     ldap_url: 'ldap://10.10.5.5:389',
-    ldap_baseDN: 'OU=Users,DC=adx,DC=intra',
+    ldap_baseDN: 'DC=adx,DC=intra',
     ldap_username: 'ldaptst@adx.intra',
     ldap_password: 'ldaptst123',
     ldap_userDomain: '@adx.intra'

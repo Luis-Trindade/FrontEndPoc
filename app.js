@@ -37,17 +37,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(auth.initialize());
 
-app.use('/', index);
-app.use('/clientes', clientes);
-app.use('/cliente',cliente);
-//app.use('/simul',auth.authenticate(),simul);
-app.use('/simul',simul);
-
 app.use('/login', login);
 app.use('/logout',logout);
-
 // para datatables api -> faz o bridge para o lease api
 app.use('/api/clientes', apiclientes);
+
+
+app.use('/clientes', auth.authenticate(), clientes);
+app.use('/cliente',auth.authenticate(),cliente);
+app.use('/simul',auth.authenticate(),simul);
+app.use('/', auth.authenticate(), index);
+//app.use('/simul',simul);
+
+
+
 
 // se quisermos forçar o layout.hbs com outro nome...
 // app.set('view options', { layout: 'other' });

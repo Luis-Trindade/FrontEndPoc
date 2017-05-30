@@ -8,7 +8,7 @@
                 <h4 class="modal-title">{{ modal_title }}</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" name="modal_form" id="modal_form" action="/{{ submit_action }}" method="{{ submit_method }}">
+                <form class="form-horizontal" name="modal_form" id="modal_form" action="/{{ submit_action }}" method="{{ submit_method }}" data-parsley-validate="" data-parsley-trigger="change">
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Código</label>
@@ -18,11 +18,11 @@
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Empresa
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio" name="empresa">
+                            <input class="col-md-2 col-sm-3" type="radio"  name="clitcli" value="E" required="">
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Particular
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio" name="particular">
+                            <input class="col-md-2 col-sm-3" type="radio" name="clitcli" value="P">
                         </div>
                     </div>
 
@@ -50,21 +50,21 @@
                         <div class="col-md-8 col-md-offset-2 col-sm-9 col-sm-offset-2"><input class="form-control" id="morada2" name="climor2"></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-2 col-sm-2 col-sm-offset-2 col-xs-3"><input class="form-control" id="codpostal1" name="clicop"></div>
-                        <div class="col-md-1 col-sm-2 col-xs-3"><input class="form-control" id="codpostal2" name="clicop2"></div>
-                        <div class="col-md-5 col-sm-5 col-xs-6"><input class="form-control" id="localidade" name="cliloc"></div>
+                        <div class="col-md-offset-2 col-md-2 col-sm-2 col-sm-offset-2 col-xs-3"><input class="form-control" id="codpostal1" name="clicop" data-parsley-type="digits"></div>
+                        <div class="col-md-2 col-sm-2 col-xs-3"><input class="form-control" id="codpostal2" name="clicop2" data-parsley-type="digits"></div>
+                        <div class="col-md-4 col-sm-5 col-xs-6"><input class="form-control" id="localidade" name="cliloc"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Email</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" type="email" id="email" name="cliwww"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="email" name="cliwww" data-parsley-type="email"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">WebSite</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" type="url" id="website" name="clitlx"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="website" name="clitlx" data-parsley-type="url"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Telefone</label>
-                        <div class="col-md-3 col-sm-3"><input class="form-control" id="telefone" name="clitel"></div>
+                        <div class="col-md-3 col-sm-3"><input class="form-control" id="telefone" name="clitel" data-parsley-type="digits"></div>
                         <label class="control-label col-md-2 col-sm-2">Nascido a</label>
                         <div class="col-md-3 col-sm-4"><input class="form-control" type="date" id="datanascimento" name="datanascimento"></div>
                     </div>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" id="modal_submit" class="btn btn-info" data-dismiss="modal">Guardar</button>
+                <button type="submit" id="modal_submit" class="btn btn-info" value="validate">Guardar</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
