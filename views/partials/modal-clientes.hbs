@@ -18,11 +18,11 @@
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Empresa
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio"  name="clitcli" value="E" required="">
+                            <input class="col-md-2 col-sm-3" type="radio"  name="clitcli" value="E" required="" onchange="ehEmpresa()">
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Particular
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio" name="clitcli" value="P">
+                            <input class="col-md-2 col-sm-3" type="radio" name="clitcli" value="P" onchange="ehParticular()">
                         </div>
                     </div>
 
@@ -84,3 +84,13 @@
         </div>
     </div>
 </div>
+<script>
+    function ehEmpresa(){
+        $('#datanascimento').prop('disabled', true);
+        $('#website').prop('disabled', false);
+    }
+    function ehParticular(){
+        $('#datanascimento').prop('disabled', false);
+        $('#website').prop('disabled', true);
+    }
+</script>

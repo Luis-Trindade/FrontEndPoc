@@ -21,6 +21,29 @@ router.get('/', function(req, res, next) {
     if(req.query.restricao != "--" ){
         restUrlClientes = restUrlClientes + '&restricao=' + req.query.restricao;
     }
+    if(req.query.order.length > 0){
+        var ordem = "&order=";
+        var ordemAsc = "";
+        var ordemDesc = "";
+        req.query.order.forEach(function(x){
+            var columnIndex = parseInt(x.column, 10) + 1;
+            if(x.dir == "asc"){
+                ordemAsc += columnIndex + ",";
+            }
+            if(x.dir == "desc"){
+                ordemDesc += columnIndex + ",";
+            }
+        });
+        if(ordemAsc.length > 0 ){
+            ordemAsc = ordemAsc.slice(0, -1);
+            ordem += ordemAsc + " asc";
+        }
+        if(ordemDesc.length > 0 ){
+            ordemDesc = ordemDesc.slice(0, -1);
+            ordem += ordemDesc + " desc";
+        }
+        restUrlClientes = restUrlClientes + ordem;
+    }
     async.parallel([
         function(callback) {
             restRequest.getRestRequest(restUrlClientes, function (err, resultados) {
