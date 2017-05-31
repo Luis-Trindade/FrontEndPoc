@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var lessMiddleware = require('less-middleware');
+var auth = require("./modules/authPassport")();
 
 var hbs = require('hbs');
 
@@ -34,16 +35,22 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/clientes', clientes);
-app.use('/cliente',cliente);
-app.use('/simul',simul);
+app.use(auth.initialize());
 
 app.use('/login', login);
 app.use('/logout',logout);
-
 // para datatables api -> faz o bridge para o lease api
 app.use('/api/clientes', apiclientes);
+
+
+app.use('/clientes', auth.authenticate(), clientes);
+app.use('/cliente',auth.authenticate(),cliente);
+app.use('/simul',auth.authenticate(),simul);
+app.use('/', auth.authenticate(), index);
+//app.use('/simul',simul);
+
+
+
 
 // se quisermos forçar o layout.hbs com outro nome...
 // app.set('view options', { layout: 'other' });
