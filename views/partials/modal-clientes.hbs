@@ -12,67 +12,67 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Código</label>
-                        <div class="col-md-3 col-sm-3"><input class="form-control" id="clinum" disabled></div>
+                        <div class="col-md-3 col-sm-3"><input class="form-control" id="clinum" value="{{ cliente.clinum }}" disabled></div>
 
                         <div class="col-md-7 col-sm-7">
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Empresa
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio"  name="clitcli" value="E" required="" onchange="ehEmpresa()">
+                            <input class="col-md-2 col-sm-3" type="radio"  name="clitcli" value="E"  required="" onchange="ehEmpresa()">
                             <label class="control-label radio-inline col-md-2 col-sm-2">
                                 Particular
                             </label>
-                            <input class="col-md-2 col-sm-3" type="radio" name="clitcli" value="P" onchange="ehParticular()">
+                            <input class="col-md-2 col-sm-3" type="radio" name="clitcli" value="P"  onchange="ehParticular()">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2" for="nacionalidade">Nacionalidade</label>
                         <div class="col-md-3 col-sm-3">
-                            <select class="form-control" id="nacionalidade" name="clipais">
+                            <select class="form-control" id="nacionalidade" name="clipais" >
                                 {{#each paises}}
-                                    <option value="{{ codigo }}">{{ nomepais }}</option>
+                                    <option value="{{ codigo }}" >{{ nomepais }}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <label class="control-label col-md-2 col-sm-2">NIF</label>
-                        <div class="col-md-3 col-sm-4"><input class="form-control" id="nif" name="clinfis"></div>
+                        <div class="col-md-3 col-sm-4"><input class="form-control" id="nif" name="clinfis" value="{{ cliente.clinfis }}"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Nome</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="nome" name="clinom" required></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="nome" name="clinom"  value="{{ cliente.clinom }}" required></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Morada</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="morada" name="climor"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="morada" name="climor" value="{{ cliente.climor }}"></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-8 col-md-offset-2 col-sm-9 col-sm-offset-2"><input class="form-control" id="morada2" name="climor2"></div>
+                        <div class="col-md-8 col-md-offset-2 col-sm-9 col-sm-offset-2"><input class="form-control" id="morada2" name="climor2" value="{{ cliente.climor2 }}"></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-2 col-sm-2 col-sm-offset-2 col-xs-3"><input class="form-control" id="codpostal1" name="clicop" data-parsley-type="digits"></div>
-                        <div class="col-md-2 col-sm-2 col-xs-3"><input class="form-control" id="codpostal2" name="clicop2" data-parsley-type="digits"></div>
-                        <div class="col-md-4 col-sm-5 col-xs-6"><input class="form-control" id="localidade" name="cliloc"></div>
+                        <div class="col-md-offset-2 col-md-2 col-sm-2 col-sm-offset-2 col-xs-3"><input class="form-control" id="codpostal1" name="clicop" value="{{ cliente.clicop }}" data-parsley-type="digits"></div>
+                        <div class="col-md-2 col-sm-2 col-xs-3"><input class="form-control" id="codpostal2" name="clicop2" value="{{ cliente.clicop2 }}" data-parsley-type="digits"></div>
+                        <div class="col-md-4 col-sm-5 col-xs-6"><input class="form-control" id="localidade" name="cliloc" value="{{ cliente.cliloc }}" ></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Email</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="email" name="cliwww" data-parsley-type="email"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="email" name="clitlx" value="{{ cliente.clitlx }}" data-parsley-type="email"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">WebSite</label>
-                        <div class="col-md-8 col-sm-9"><input class="form-control" id="website" name="clitlx" data-parsley-type="url"></div>
+                        <div class="col-md-8 col-sm-9"><input class="form-control" id="website" name="cliwww" value="{{ cliente.cliwww }}" data-parsley-type="url"></div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">Telefone</label>
-                        <div class="col-md-3 col-sm-3"><input class="form-control" id="telefone" name="clitel" data-parsley-type="digits"></div>
+                        <div class="col-md-3 col-sm-3"><input class="form-control" id="telefone" name="clitel" value="{{ cliente.clitel }}" data-parsley-type="digits"></div>
                         <label class="control-label col-md-2 col-sm-2">Nascido a</label>
-                        <div class="col-md-3 col-sm-4"><input class="form-control" type="date" id="datanascimento" name="datanascimento"></div>
+                        <div class="col-md-3 col-sm-4"><input class="form-control" type="date" id="datanascimento" name="datanascimento" value="{{ restocliente.datanascimento }}"></div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-1 col-sm-1"></div>
-                        <label style="margin-left:10px" class="checkbox-inline control-label col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2 col-xs-12" id="cliehsucursal"><input type="checkbox" value="S" name="cliehsucursal">Sucursal</label>
-                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="cliivacaixa"><input type="checkbox" value="S" name="cliivacaixa">Iva caixa</label>
-                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="clibanco"><input type="checkbox" value="S" name="clibanco">Cli Banco</label>
+                        <label style="margin-left:10px" class="checkbox-inline control-label col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2 col-xs-12" id="cliehsucursal"><input type="checkbox" value="S" name="cliehsucursal" {{#if cliente.cliehsucursal }}checked{{/if}}>Sucursal</label>
+                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="cliivacaixa"><input type="checkbox" value="S" name="cliivacaixa" {{#if cliente.cliivacaixa }}checked{{/if}}>Iva caixa</label>
+                        <label class="checkbox-inline control-label col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-12" id="clibanco"><input type="checkbox" value="S" name="clibanco" {{#if cliente.clibanco }}checked{{/if}}>Cli Banco</label>
                     </div>
                 </form>
             </div>
@@ -93,4 +93,5 @@
         $('#datanascimento').prop('disabled', false);
         $('#website').prop('disabled', true);
     }
+
 </script>

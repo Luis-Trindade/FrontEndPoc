@@ -10,11 +10,16 @@ exports.getRestRequest = function(hostUrl, processResult){
 }
 
 // TODO: tem de se fazer
-exports.putRestRequest = function(hostUrl, processResult){
-    request({ method: 'PUT', uri: hostUrl }, function(err, response, body) {
+exports.putRestRequest = function(hostUrl, requestData,processResult){
+    request({
+            method: 'PUT',
+            uri: hostUrl,
+            headers: {"content-type": "application/json",    },
+            json: requestData
+    }, function(err, response, body) {
         // JSON body
         if(err) { console.log(err); processResult(true); return; }
-        var obj = JSON.parse(body);
+        var obj = "OK" //JSON.parse(body);
         processResult(false, obj);
     });
 }
