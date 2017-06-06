@@ -21,7 +21,7 @@ router.get('/:numcliente', function(req, res, next) {
         modal_id: "modificaCliente",
         temModal: "Sim",
         submit_method: "PUT",
-        submit_action: "clientes"
+        submit_action: "clientes",
     };
 
     async.parallel([
@@ -88,9 +88,13 @@ router.get('/:numcliente', function(req, res, next) {
 
             context.cliente = cliente;
             context.restocliente = restocliente;
-
             context.paises = results[0];
-
+            var map_address="NULL";
+            // para o mapa
+            if(cliente.climor){
+                map_address = cliente.climor.replace(/ /g, '+') +","+ cliente.cliloc.replace(/ /g, '+');
+            }
+            context.map_address = map_address;
             res.render('cliente', context);
         }
     );

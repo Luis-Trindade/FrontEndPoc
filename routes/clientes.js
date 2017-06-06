@@ -24,8 +24,7 @@ router.get('/', function(req, res, next) {
         submit_method: "POST",
         submit_action: "clientes",
         mensagem_sucesso_modal: "'Foi registado o cliente número ' + result.client.clinum",
-        sucess_follow_link: "'/cliente/ ' + result.client.clinum",
-        paisselected: "FR"
+        sucess_follow_link: "'/cliente/ ' + result.client.clinum"
     };
 
     async.parallel([
@@ -50,6 +49,34 @@ router.get('/', function(req, res, next) {
     ],
     function(err, results) {
         if(err) { console.log(err); res.send(500,"Server Error"); return; }
+        var cliente = {};
+        var clienteResult = results[1];
+        cliente.clitcli = clienteResult[0].clitcli;
+        cliente.clipais = clienteResult[0].clipais;
+        cliente.clinfis = clienteResult[0].clinfis;
+        cliente.clinom = clienteResult[0].clinom;
+        cliente.climor = clienteResult[0].climor;
+        cliente.climor2 = clienteResult[0].climor2;
+        cliente.clicop = clienteResult[0].clicop;
+        cliente.clicop2 = clienteResult[0].clicop2;
+        cliente.cliloc = clienteResult[0].cliloc;
+        cliente.cliwww = clienteResult[0].cliwww;
+        cliente.clitlx = clienteResult[0].clitlx;
+        cliente.clitel = clienteResult[0].clitel;
+        cliente.cliehsucursal = false;
+        if (clienteResult[0].cliehsucursal == "S") {
+            cliente.cliehsucursal = true;
+        }
+        cliente.cliivacaixa = false;
+        if (clienteResult[0].cliivacaixa == "S") {
+            cliente.cliivacaixa = true;
+        }
+        cliente.clibanco = false;
+        if (clienteResult[0].clibanco == "S") {
+            cliente.clibanco = true;
+        }
+
+        context.cliente = cliente;
         context.restricoes = results[0];
         context.paises = results[2];
         res.render('clientes', context);
