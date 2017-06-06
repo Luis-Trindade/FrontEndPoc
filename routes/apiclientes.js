@@ -8,18 +8,20 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     var restUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/short';
     var countUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/count';
+    var countFilteredUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/count';
 
-    restUrlClientes = restUrlClientes + '?';
+    var queryParams='?';
+
     if ( req.query.start > 0 ) {
-        restUrlClientes = restUrlClientes + 'start=' + req.query.start;
+        queryParams = queryParams + 'start=' + req.query.start;
     }
-    restUrlClientes = restUrlClientes + '&nrec=' + req.query.length;
+    queryParams = queryParams + '&nrec=' + req.query.length;
     if(req.query.search.value ){
-        restUrlClientes = restUrlClientes + '&criterio=' + req.query.search.value;
+        queryParams = queryParams + '&criterio=' + req.query.search.value;
     }
 
     if(req.query.restricao != "--" ){
-        restUrlClientes = restUrlClientes + '&restricao=' + req.query.restricao;
+        queryParams = queryParams + '&restricao=' + req.query.restricao;
     }
     if(req.query.order.length > 0){
         var ordem = "&order=";
@@ -42,8 +44,11 @@ router.get('/', function(req, res, next) {
             ordemDesc = ordemDesc.slice(0, -1);
             ordem += ordemDesc + " desc";
         }
-        restUrlClientes = restUrlClientes + ordem;
+        queryParams = queryParams + ordem;
     }
+    restUrlClientes = restUrlClientes + queryParams;
+    countFilteredUrlClientes = countFilteredUrlClientes + queryParams;
+
     async.parallel([
         function(callback) {
             restRequest.getRestRequest(restUrlClientes, function (err, resultados) {
@@ -56,6 +61,12 @@ router.get('/', function(req, res, next) {
                 if(err) { console.log(err); callback(true); return; }
                 callback(false, resultados);
             });
+        },
+        function(callback) {
+            restRequest.getRestRequest(countFilteredUrlClientes, function (err, resultados) {
+                if(err) { console.log(err); callback(true); return; }
+                callback(false, resultados);
+            });
         }
     ],
         function(err, results) {
@@ -63,7 +74,7 @@ router.get('/', function(req, res, next) {
             var resposta = {
                 draw: req.query.draw,
                 recordsTotal: results[1],
-                recordsFiltered: results[1],
+                recordsFiltered: results[2],
                 data: results[0]
             };
             res.json(resposta);
