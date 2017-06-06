@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     var restUrlListagem = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/restricaoLst?listagem=CLIENT';
     var restUrlPais = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/pais/short';
-    var restUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/short';
+    var restUrlDefaults = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/defaults';
 
     var context = {
         modal_title: "Adicionar Cliente",
@@ -22,7 +22,10 @@ router.get('/', function(req, res, next) {
         cod_select: "cod_restricao",
         temModal: "Sim",
         submit_method: "POST",
-        submit_action: "clientes"
+        submit_action: "clientes",
+        mensagem_sucesso_modal: "'Foi registado o cliente número ' + result.client.clinum",
+        sucess_follow_link: "'/cliente/ ' + result.client.clinum",
+        paisselected: "FR"
     };
 
     async.parallel([
@@ -30,6 +33,12 @@ router.get('/', function(req, res, next) {
             restRequest.getRestRequest(restUrlListagem, function (err, restricao) {
                if(err) { console.log(err); callback(true); return; }
                 callback(false, restricao);
+            });
+        },
+        function(callback) {
+            restRequest.getRestRequest(restUrlDefaults, function (err, defaults) {
+                if(err) { console.log(err); callback(true); return; }
+                callback(false, defaults);
             });
         },
         function(callback) {
@@ -42,7 +51,7 @@ router.get('/', function(req, res, next) {
     function(err, results) {
         if(err) { console.log(err); res.send(500,"Server Error"); return; }
         context.restricoes = results[0];
-        context.paises = results[1];
+        context.paises = results[2];
         res.render('clientes', context);
     }
     );
@@ -90,11 +99,11 @@ router.post('/', function(req, res, next) {
     }
     var restUrlRegCliente = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client';
 
-    restRequest.postRestRequest(restUrlRegCliente, registoCliente, function (err, restricao) {
+    restRequest.postRestRequest(restUrlRegCliente, registoCliente, function (err, resposta) {
         if(err) { console.log(err); res.sendStatus(406); return; }
-        res.sendStatus(200);
+
+        res.status(200).json({ client: resposta.rClienteT, restocliente: resposta.rRestCliT });
     });
-    //res.sendStatus(200);
 
 });
 

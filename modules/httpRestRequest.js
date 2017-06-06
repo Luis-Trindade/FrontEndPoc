@@ -19,7 +19,7 @@ exports.putRestRequest = function(hostUrl, processResult){
     });
 }
 
-// TODO: tem de se fazer
+
 exports.postRestRequest = function(hostUrl, requestData, processResult){
     request({
             method: 'POST',
@@ -31,7 +31,7 @@ exports.postRestRequest = function(hostUrl, requestData, processResult){
     }, function(err, response, body) {
         // JSON body
         if(err) { console.log(err); processResult(true); return; }
-        var obj = "OK"//JSON.parse(body);
+        var obj = body;
         processResult(false, obj);
     });
 }

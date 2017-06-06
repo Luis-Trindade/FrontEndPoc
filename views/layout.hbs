@@ -147,23 +147,40 @@
 
         $(document).ready(function() {
             var frm = $('#modal_form');
-            frm.parsley();
+            frm.parsley({
+                /*successClass: "has-success",*/
+                errorClass: "has-error",
+                classHandler: function(el) {
+                    return el.$element.closest("div");
+                },
+                errorsWrapper: "<span class='help-block'></span>",
+                errorTemplate: "<span></span>"
+            });
             // bind 'myForm' and provide a simple callback function
             $('#modal_submit').click(function () {
-
+                var tokenValue = sessionStorage.getItem("token");
+                var urlWithAuth = frm.attr('action') + "?auth=" + tokenValue;
                 if(frm.parsley().validate()) {
                     $('#{{ modal_id }}').modal('hide');
                     $.ajax({
                         type: frm.attr('method'),
-                        url: frm.attr('action'),
+                        url: urlWithAuth,
                         data: frm.serialize(),
                         cache: false,
                         success: function (result) {
-                            $('#errmsg-header').html("Sucesso");
-                            $('#errmsg-usermsg').html("A operação foi concluida com sucesso");
-                            $('#errmsg-button').toggleClass('btn-danger btn-success');
-                            $('#errmsg-button').toggleClass('btn-info btn-success');
-                            $('#errmsg-dialog').modal('show');
+                            if(result.client){
+                                $('#errmsg-header').html("Sucesso");
+                                $('#errmsg-usermsg').html("A operação foi concluida com sucesso. " + {{{ mensagem_sucesso_modal }}});
+                                $('#errmsg-button').toggleClass('btn-danger btn-success');
+                                $('#errmsg-button').toggleClass('btn-info btn-success');
+                                $('#errmsg-button').click(function(e){
+                                    e.preventDefault();
+                                    window.location = {{{ sucess_follow_link }}} + "?auth=" + tokenValue;
+                                });
+                                $('#errmsg-dialog').modal('show');
+                            } else {
+                                window.location.replace('/login');
+                            }
                         },
                         error: function () {
                             $('#errmsg-header').html("Erro");

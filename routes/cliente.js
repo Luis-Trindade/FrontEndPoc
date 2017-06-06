@@ -12,7 +12,7 @@ var restRequest = require('../modules/httpRestRequest');
 router.get('/:numcliente', function(req, res, next) {
     console.log('Request Id:', req.params.numcliente);
 
-    var restUrlClient = 'http://apaxsys004:5112/lease/api/client/'+req.params.numcliente;
+    var restUrlClient = 'http://apaxsys004:5113/lease/api/client/'+req.params.numcliente;
 
     var context = {
         modal_title: "Modificar Clientes",

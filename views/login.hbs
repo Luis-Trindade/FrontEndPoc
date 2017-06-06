@@ -40,7 +40,7 @@
 <!-- Modal Erros-->
 {{> modal_dialog }}
 <div id="login" class="modal show" role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-sm" onKeyPress="return checkSubmit(event)">
         <!-- Modal content-->
         <div class="modal-content">
 
@@ -97,9 +97,23 @@
 <script src="../dist/js/sb-admin-2.js"></script>
 -->
 <script>
+    function checkSubmit(e) {
+        if(e && e.keyCode == 13) {
+            $('#login_submit').click();
+        }
+    }
+
     $(document).ready(function() {
         var frm = $('#login_form');
-
+        frm.parsley({
+            successClass: "has-success",
+            errorClass: "has-error",
+            classHandler: function(el) {
+                return el.$element.closest("div");
+            },
+            errorsWrapper: "<span class='help-block'></span>",
+            errorTemplate: "<span></span>"
+        });
         $('#login_submit').click(function () {
 
                 $.ajax({

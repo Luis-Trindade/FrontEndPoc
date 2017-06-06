@@ -26,6 +26,10 @@ app.set('view engine', 'hbs');
 // partiais
 hbs.registerPartials(__dirname + '/views/partials');
 
+hbs.registerHelper('isEqual', function (expectedValue, value) {
+    return value === expectedValue;
+});
+
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, '/public/img', 'favicon.ico')));
 app.use(logger('dev'));

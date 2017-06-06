@@ -4,6 +4,7 @@ var passport = require('passport');
 var users = require('../modules/checkAuthUser');
 var cfg = require('../modules/config');
 var jwt = require("jwt-simple");
+var jwt2 = require('jsonwebtoken');
 
 
 /* GET home page. */
@@ -20,7 +21,10 @@ router.post('/', function(req, res, next) {
         var user = users.checkAuthUser(name, password, function(auth){
             if (auth) {
                 var payload = {username: name };
-                var token = jwt.encode(payload, cfg.jwtSecret);
+               /* var token = jwt.encode(payload, cfg.jwtSecret); */
+                var token = jwt2.sign(payload, cfg.jwtSecret, {
+                    expiresIn: 1800 // 30min
+                });
                 res.json({token: token});
                 console.log('Authenticated!');
             }
