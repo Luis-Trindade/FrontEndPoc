@@ -19,7 +19,11 @@ exports.putRestRequest = function(hostUrl, requestData,processResult){
     }, function(err, response, body) {
         // JSON body
         if(err) { console.log(err); processResult(true); return; }
-        var obj = "OK" //JSON.parse(body);
+        if(response.statusCode != 200 && response.statusCode != 201 ) {
+            var obj = body;
+            processResult(true,obj); return;
+        }
+        var obj = body;
         processResult(false, obj);
     });
 }
@@ -36,6 +40,10 @@ exports.postRestRequest = function(hostUrl, requestData, processResult){
     }, function(err, response, body) {
         // JSON body
         if(err) { console.log(err); processResult(true); return; }
+        if(response.statusCode != 200 && response.statusCode != 201 ) {
+            var obj = body;
+            processResult(true,obj); return;
+        }
         var obj = body;
         processResult(false, obj);
     });

@@ -127,7 +127,10 @@ router.post('/', function(req, res, next) {
     var restUrlRegCliente = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client';
 
     restRequest.postRestRequest(restUrlRegCliente, registoCliente, function (err, resposta) {
-        if(err) { console.log(err); res.sendStatus(406); return; }
+        if(err) {
+            res.status(406).json( resposta );
+            return;
+        }
 
         res.status(200).json({ client: resposta.rClienteT, restocliente: resposta.rRestCliT });
     });

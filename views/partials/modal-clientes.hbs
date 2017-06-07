@@ -79,7 +79,7 @@
                     <div class="row field-padding">
                         <label class="col-sm-2" for="clitlx">Website</label>
                         <div class="col-sm-9 ">
-                            <input type="text" class="form-control" id="website" name="cliwww" data-parsley-type="url" value="{{ cliente.cliwww }}"/>
+                            <input type="text" class="form-control" id="website" name="cliwww" data-parsley-type="url" value="{{ cliente.cliwww }}" {{#if (isEqual cliente.clitcli "P" ) }} disabled {{/if}}/>
                         </div>
                     </div>
                     <div class="row field-padding">
@@ -89,7 +89,7 @@
                         </div>
                         <label class="col-sm-3">Nascido a</label>
                         <div class="col-sm-3">
-                            <input type="date" class="form-control" id="datanascimento" name="datanascimento" value="{{ restocliente.datanascimento }}"/>
+                            <input type="date" class="form-control" id="datanascimento" name="datanascimento" {{#if (isEqual cliente.clitcli "E" ) }} disabled {{/if}} value="{{ restocliente.datanascimento }}"/>
                         </div>
                     </div>
 

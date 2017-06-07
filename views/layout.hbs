@@ -168,6 +168,7 @@
                         data: frm.serialize(),
                         cache: false,
                         success: function (result) {
+                            console.log(result);
                             if(result.client){
                                 $('#errmsg-header').html("Sucesso");
                                 $('#errmsg-usermsg').html("A operação foi concluida com sucesso. " + {{{ mensagem_sucesso_modal }}});
@@ -182,9 +183,10 @@
                                 window.location.replace('/login');
                             }
                         },
-                        error: function () {
+                        error: function (result) {
+                            console.log(result);
                             $('#errmsg-header').html("Erro");
-                            $('#errmsg-usermsg').html("Houve um erro na operação");
+                            $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
                             $('#errmsg-button').toggleClass('btn-success btn-danger');
                             $('#errmsg-button').toggleClass('btn-info btn-danger');
                             $('#errmsg-dialog').modal('show');

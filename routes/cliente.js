@@ -21,7 +21,9 @@ router.get('/:numcliente', function(req, res, next) {
         modal_id: "modificaCliente",
         temModal: "Sim",
         submit_method: "PUT",
-        submit_action: "clientes",
+        submit_action: "cliente/" + req.params.numcliente,
+        mensagem_sucesso_modal: "'Foi modificado o cliente '",
+        sucess_follow_link: "'/clientes'"
     };
 
     async.parallel([
@@ -142,17 +144,17 @@ router.put('/:numcliente', function(req, res, next) {
         cliente.clibanco = 'N';
     }
 
-    modificacliente.cliente = cliente;
+    modificacliente.client = cliente;
     if(req.body.clitcli == 'P'){
-            modificaCliente.restocliente = restocliente;
+            modificacliente.restocliente = restocliente;
     }
 
     restRequest.putRestRequest(restUrlClient, modificacliente, function (err, modificacliente) {
         if(err) {
-            console.log(err);
-            res.send(500,"Server Error");
+            res.status(406).json( modificacliente );
             return;
         }
+        res.status(200).json({ client: modificacliente.rClienteT, restocliente: modificacliente.rRestCliT });
     });
 
 });
