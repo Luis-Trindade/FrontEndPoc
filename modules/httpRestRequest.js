@@ -54,8 +54,8 @@ exports.deleteRestRequest = function(hostUrl, processResult){
     request({ method: 'DELETE', uri: hostUrl }, function(err, response, body) {
         // JSON body
         if(err) { console.log(err); processResult(true); return; }
-        var obj = JSON.parse(body);
-        processResult(false, obj);
+        //var obj = JSON.parse(body);
+        processResult(false);
     });
 }
 

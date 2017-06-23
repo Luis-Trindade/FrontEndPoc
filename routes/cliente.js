@@ -159,4 +159,19 @@ router.put('/:numcliente', function(req, res, next) {
 
 });
 
+router.delete('/:numcliente', function(req, res, next) {
+    console.log('Request Id:', req.params.numcliente);
+    var restUrlClient = 'http://' + cfg.lease_rest_host + ':' + cfg.lease_rest_port + '/lease/api/client/' + req.params.numcliente;
+
+    restRequest.deleteRestRequest(restUrlClient, function (err) {
+        if (err) {
+            console.log(err);
+            res.send(406, "Server Error");
+            return;
+        }
+        res.send(200, "OK");
+        return;
+    });
+});
+
 module.exports = router;

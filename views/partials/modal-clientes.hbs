@@ -34,7 +34,7 @@
                         </div>
                         <label class="col-sm-3">NIF</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="nif" name="clinfis" value="{{ cliente.clinfis }}"/>
+                            <input type="text" class="form-control" id="nif" name="clinfis" data-parsley-debounce="500" data-parsley-validanif='' value="{{ cliente.clinfis }}"/>
                         </div>
                     </div>
 

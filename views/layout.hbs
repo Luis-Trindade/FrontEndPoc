@@ -143,9 +143,37 @@
     }
 </script>
 {{#if temModal}}
+    <script href="parsley.remote.js"></script>
     <script>
 
+        window.Parsley.addValidator('validanif', {
+            validateString: function(value) {
+                var tokenValue = sessionStorage.getItem("token");
+                var validaNifUrl = '/api/clientes/valida_nif?nif=' + value + "&auth=" + tokenValue;
+                var isValid;
+                $.ajax({
+                    type: 'GET',
+                    url: validaNifUrl,
+                    async: false,
+                    success: function (result) {
+                        console.log(result);
+                        isValid = true;
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            },
+            messages: {
+                'pt-pt': 'Este NIF é inválido',
+                'en': 'Invalid fiscal number'
+            }
+        });
+
         $(document).ready(function() {
+
             var frm = $('#modal_form');
             frm.parsley({
                 /*successClass: "has-success",*/

@@ -4,6 +4,32 @@ var cfg = require('../modules/config');
 var async = require('async');
 var router = express.Router();
 
+router.get('/valida_nif', function(req, res, next){
+    var restUrlValidaNif = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/valida_nif';
+    if ( req.query.nif > 0 ) {
+        restUrlValidaNif = restUrlValidaNif + '?nif=' + req.query.nif;
+    }
+    async.parallel([
+        function(callback) {
+            restRequest.getRestRequest(restUrlValidaNif, function (err, resultados) {
+                if(err) { console.log(err); callback(true); return; }
+                callback(false, resultados);
+            });
+        } ],
+        function(err, results) {
+            if(err) { console.log(err); res.send(500,"Server Error"); return; }
+            if(results == 1) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(400);
+            }
+        }
+    );
+
+
+
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     var restUrlClientes = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client/short';
