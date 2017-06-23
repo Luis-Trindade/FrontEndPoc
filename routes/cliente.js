@@ -93,7 +93,7 @@ router.get('/:numcliente', function(req, res, next) {
             context.paises = results[0];
             var map_address="NULL";
             // para o mapa
-            if(cliente.climor){
+            if(cliente.climor && cliente.cliloc){
                 map_address = cliente.climor.replace(/ /g, '+') +","+ cliente.cliloc.replace(/ /g, '+');
             }
             context.map_address = map_address;
