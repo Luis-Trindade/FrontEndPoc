@@ -9,7 +9,7 @@ exports.getRestRequest = function(hostUrl, processResult){
     });
 }
 
-// TODO: tem de se fazer
+
 exports.putRestRequest = function(hostUrl, requestData,processResult){
     request({
             method: 'PUT',
@@ -49,7 +49,7 @@ exports.postRestRequest = function(hostUrl, requestData, processResult){
     });
 }
 
-// TODO: tem de se fazer correctamente(em principio não e preciso fazer nada)
+
 exports.deleteRestRequest = function(hostUrl, processResult){
     request({ method: 'DELETE', uri: hostUrl }, function(err, response, body) {
         // JSON body
