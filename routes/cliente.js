@@ -23,7 +23,9 @@ router.get('/:numcliente', function(req, res, next) {
         submit_method: "PUT",
         submit_action: "cliente/" + req.params.numcliente,
         mensagem_sucesso_modal: "'Foi modificado o cliente '",
-        sucess_follow_link: "'/clientes'"
+        sucess_follow_link: "'/clientes'",
+        temGraficos:"Sim",
+        ficheiro_graficos: "pie-dados"
     };
 
     async.parallel([
@@ -61,43 +63,48 @@ router.get('/:numcliente', function(req, res, next) {
             var paises = {};
 
             //callback(false, restricao);
-            cliente.clinum = results[1].client[0].clinum;
-            cliente.clitcli = results[1].client[0].clitcli;
-            cliente.clipais = results[1].client[0].clipais;
-            cliente.clinfis = results[1].client[0].clinfis;
-            cliente.clinom = results[1].client[0].clinom;
-            cliente.climor = results[1].client[0].climor;
-            cliente.climor2 = results[1].client[0].climor2;
-            cliente.clicop = results[1].client[0].clicop;
-            cliente.clicop2 = results[1].client[0].clicop2;
-            cliente.cliloc = results[1].client[0].cliloc;
-            cliente.cliwww = results[1].client[0].cliwww;
-            cliente.clitlx = results[1].client[0].clitlx;
-            cliente.clitel = results[1].client[0].clitel;
-            restocliente.datanascimento = results[1].restocliente[0].datanascimento;
-            cliente.cliehsucursal = false;
-            if (results[1].client[0].cliehsucursal == "S") {
-                cliente.cliehsucursal = true;
-            }
-            cliente.cliivacaixa = false;
-            if (results[1].client[0].cliivacaixa == "S") {
-                cliente.cliivacaixa = true;
-            }
-            cliente.clibanco = false;
-            if (results[1].client[0].clibanco == "S") {
-                cliente.clibanco = true;
-            }
+            if(results[1].client[0]) {
+                cliente.clinum = results[1].client[0].clinum;
+                cliente.clitcli = results[1].client[0].clitcli;
+                cliente.clipais = results[1].client[0].clipais;
+                cliente.clinfis = results[1].client[0].clinfis;
+                cliente.clinom = results[1].client[0].clinom;
+                cliente.climor = results[1].client[0].climor;
+                cliente.climor2 = results[1].client[0].climor2;
+                cliente.clicop = results[1].client[0].clicop;
+                cliente.clicop2 = results[1].client[0].clicop2;
+                cliente.cliloc = results[1].client[0].cliloc;
+                cliente.cliwww = results[1].client[0].cliwww;
+                cliente.clitlx = results[1].client[0].clitlx;
+                cliente.clitel = results[1].client[0].clitel;
+                restocliente.datanascimento = results[1].restocliente[0].datanascimento;
+                cliente.cliehsucursal = false;
+                if (results[1].client[0].cliehsucursal == "S") {
+                    cliente.cliehsucursal = true;
+                }
+                cliente.cliivacaixa = false;
+                if (results[1].client[0].cliivacaixa == "S") {
+                    cliente.cliivacaixa = true;
+                }
+                cliente.clibanco = false;
+                if (results[1].client[0].clibanco == "S") {
+                    cliente.clibanco = true;
+                }
 
-            context.cliente = cliente;
-            context.restocliente = restocliente;
-            context.paises = results[0];
-            var map_address="NULL";
-            // para o mapa
-            if(cliente.climor && cliente.cliloc){
-                map_address = cliente.climor.replace(/ /g, '+') +","+ cliente.cliloc.replace(/ /g, '+');
+                context.cliente = cliente;
+                context.restocliente = restocliente;
+                context.paises = results[0];
+                var map_address = "NULL";
+                // para o mapa
+                if (cliente.climor && cliente.cliloc) {
+                    map_address = cliente.climor.replace(/ /g, '+') + "," + cliente.cliloc.replace(/ /g, '+');
+                }
+                context.map_address = map_address;
+                res.render('cliente', context);
+            } else {
+                console.log("CLIENTE NAO EXISTE");
+                res.redirect('/clientes?auth=' + req.query.auth);
             }
-            context.map_address = map_address;
-            res.render('cliente', context);
         }
     );
 });
@@ -166,10 +173,10 @@ router.delete('/:numcliente', function(req, res, next) {
     restRequest.deleteRestRequest(restUrlClient, function (err) {
         if (err) {
             console.log(err);
-            res.send(406, "Server Error");
+            res.sendStatus(406, "Server Error");
             return;
         }
-        res.send(200, "OK");
+        res.sendStatus(200, "OK");
         return;
     });
 });

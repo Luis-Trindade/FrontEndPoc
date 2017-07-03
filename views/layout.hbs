@@ -143,7 +143,6 @@
     }
 </script>
 {{#if temModal}}
-    <script href="parsley.remote.js"></script>
     <script>
 
         window.Parsley.addValidator('validanif', {
@@ -185,7 +184,7 @@
                 errorTemplate: "<span></span>"
             });
             // bind 'myForm' and provide a simple callback function
-            $('#modal_submit').click(function () {
+            $('#modal_submit').unbind().click(function () {
                 var tokenValue = sessionStorage.getItem("token");
                 var urlWithAuth = frm.attr('action') + "?auth=" + tokenValue;
                 if(frm.parsley().validate()) {
@@ -200,9 +199,8 @@
                             if(result.client){
                                 $('#errmsg-header').html("Sucesso");
                                 $('#errmsg-usermsg').html("A operação foi concluida com sucesso. " + {{{ mensagem_sucesso_modal }}});
-                                $('#errmsg-button').toggleClass('btn-danger btn-success');
-                                $('#errmsg-button').toggleClass('btn-info btn-success');
-                                $('#errmsg-button').click(function(e){
+                                $('#errmsg-button').removeClass('btn-danger').addClass('btn-success');
+                                $('#errmsg-button').unbind().click(function(e){
                                     e.preventDefault();
                                     window.location = {{{ sucess_follow_link }}} + "?auth=" + tokenValue;
                                 });
@@ -215,8 +213,7 @@
                             console.log(result);
                             $('#errmsg-header').html("Erro");
                             $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
-                            $('#errmsg-button').toggleClass('btn-success btn-danger');
-                            $('#errmsg-button').toggleClass('btn-info btn-danger');
+                            $('#errmsg-button').removeClass('btn-success').addClass('btn-danger');
                             $('#errmsg-dialog').modal('show');
                         }
                     });
@@ -237,7 +234,11 @@
                 return value;
             }
         });
+{{#if nav_to_disable}}
+        $('#{{ nav_to_disable }}').addClass("disabled");
+{{/if}}
     });
+
 </script>
 
 </body>

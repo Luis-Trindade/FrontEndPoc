@@ -114,7 +114,7 @@
             errorsWrapper: "<span class='help-block'></span>",
             errorTemplate: "<span></span>"
         });
-        $('#login_submit').click(function () {
+        $('#login_submit').unbind().click(function () {
 
                 $.ajax({
                     type: 'POST',

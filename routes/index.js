@@ -6,7 +6,8 @@ router.get('/', function(req, res, next) {
 
     res.render('index', {
         temGraficos:"Sim",
-        ficheiro_graficos: "dados"
+        ficheiro_graficos: "dados",
+        nav_to_disable: "nav_dash"
     });
 });
 

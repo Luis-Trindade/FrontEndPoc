@@ -175,3 +175,13 @@ div.toolbar { float:left; width:20% }
   hyphens: auto;
 
 }
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.nav > li > a.disabled {
+  background-color: #eee;
+}
+

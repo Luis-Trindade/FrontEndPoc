@@ -41,3 +41,4 @@ Morris.Bar({
     hideHover: 'auto',
     resize: true
 });
+

@@ -24,7 +24,8 @@ router.get('/', function(req, res, next) {
         submit_method: "POST",
         submit_action: "clientes",
         mensagem_sucesso_modal: "'Foi registado o cliente número ' + result.client.clinum",
-        sucess_follow_link: "'/cliente/ ' + result.client.clinum"
+        sucess_follow_link: "'/cliente/ ' + result.client.clinum",
+        nav_to_disable: "nav_clientes"
     };
 
     async.parallel([

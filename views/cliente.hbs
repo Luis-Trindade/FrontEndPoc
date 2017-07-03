@@ -1,13 +1,9 @@
 {{> modal_clientes }}
 {{> modal_dialog }}
-
-<br>
-<br>
-
 <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
-        <div class="panel panel-default panel-primary">
-            <div class="panel-heading ">
+        <div class="panel panel-primary">
+            <div class="panel-heading panel-heading-audaxys" style="min-height: 70px">
                 <h4>Cliente
                     <button type="button" class="btn btn-success btn-circle btn-xs" data-toggle="modal"
                             data-target="#{{ modal_id }}">
@@ -32,8 +28,8 @@
                     </span><!-- /.dropdown -->
                 </h4>
             </div>
-            <div class="panel-body">
-                <div class="container-fluid">
+            <div class="panel-body " >
+                <div class="container-fluid" style="min-height: 100%">
                     <div class="row">
                         <div class="col-md-4 col-lg-4">
                             <p><strong>Nome</strong></p>
@@ -71,15 +67,15 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
-        <div class="panel panel-default panel-primary">
-            <div class="panel-heading">
+        <div class="panel panel-primary ">
+            <div class="panel-heading panel-heading-audaxys" style="min-height: 71px">
                 <h4>Localização</h4>
             </div>
-            <div class="panel-body embed-responsive embed-responsive-16by9">
+            <div class="panel-body embed-responsive embed-responsive-16by9" >
                 <iframe class="embed-responsive-item"
                         width="600"
                         height="400"
-                        frameborder="0" style="border:0"
+                        frameborder="0" style="..."
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB8G1i2Hwt_PIhC7LtRnBWQolyXhPbtjZE
     &q={{map_address}}" allowfullscreen>
                 </iframe>
@@ -87,62 +83,127 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row ">
     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
-        <div class="panel panel-default panel-primary">
-            <div class="panel-heading">
+        <div class="panel panel-primary">
+            <div class="panel-heading panel-heading-audaxys" >
                 <h4>Contratos</h4>
             </div>
-            <div class="panel-body">
-                <img src="../img/Tabela.PNG" width="100%"/>
+            <div class="panel-body" >
+                <!--<img src="../img/Tabela.PNG" width="100%"/>-->
+                <table class="table table-sm table-responsive table-striped" id="dataTables-contratos">
+                    <thead>
+                    <tr>
+                        <th name="ctonum">Número</th>
+                        <th>Início</th>
+                        <th>Prazo</th>
+                        <th>Vincendo</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="odd gradeX">
+                            <td>23975</td>
+                            <td>23/06/2010</td>
+                            <td>36</td>
+                            <td>16567,00</td>
+                        </tr>
+                        <tr class="odd gradeX">
+                            <td>23976</td>
+                            <td>25/06/2009</td>
+                            <td>10</td>
+                            <td>5600,00</td>
+                        </tr>
+                        <tr class="odd gradeX">
+                            <td>23000</td>
+                            <td>23/06/2008</td>
+                            <td>68</td>
+                            <td>21568,00</td>
+                        </tr>
+                        <tr class="odd gradeX">
+                            <td>23982</td>
+                            <td>23/06/2010</td>
+                            <td>46</td>
+                            <td>9995,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="...">
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Seguinte</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
-        <div class="panel panel-default panel-primary">
-            <div class="panel-heading">
-                <h4>Propostas</h4>
+        <div class="panel panel-primary">
+            <div class="panel-heading panel-heading-audaxys">
+                <h4>Pipeline por tipo de proposta</h4>
             </div>
-            <div class="panel-body">
-                <img src="../img/Grafico.PNG" width="100%"/>
+            <div class="panel-body" >
+                <div id="morris-donut-chart"></div>
             </div>
         </div>
     </div>
 </div>
 
+
 <script>
+
     function deleteCliente(){
         console.log("Vou apagar o cliente {{cliente.clinum}}");
         var tokenValue = sessionStorage.getItem("token");
-
-        var deleteUrl = '/cliente/{{cliente.clinum}}' + "?auth=" + tokenValue;
-        $.ajax({
-            url: deleteUrl,
-            method: 'DELETE',
-            cache: false,
-            success: function (result) {
-                if(result){
-                    $('#errmsg-header').html("Sucesso");
-                    $('#errmsg-usermsg').html("A operação foi concluida com sucesso.<br> O cliente " + {{ cliente.clinum }} + " foi apagado com sucesso");
-                    $('#errmsg-button').toggleClass('btn-danger btn-success');
-                    $('#errmsg-button').toggleClass('btn-info btn-success');
-                    $('#errmsg-button').click(function(e){
-                        e.preventDefault();
-                        window.location = "/clientes" + "?auth=" + tokenValue;
-                    });
+        $('#errmsg-cancel').removeClass("hidden");
+        $('#errmsg-header').html("Confirma?");
+        $('#errmsg-usermsg').html("O cliente " + {{ cliente.clinum }} + ' vai ser apagado.<br> Deseja continuar?');
+        var okbutton = $('#errmsg-button');
+        okbutton.removeClass('btn-danger').addClass('btn-success');
+        okbutton.unbind().click(function(e){
+            var deleteUrl = '/cliente/{{cliente.clinum}}' + "?auth=" + tokenValue;
+            $.ajax({
+                url: deleteUrl,
+                method: 'DELETE',
+                cache: false,
+                success: function (result) {
+                    console.log("SUCESSO");
+                    if(result){
+                        $('#errmsg-cancel').addClass("hidden");
+                        $('#errmsg-header').html("Sucesso");
+                        $('#errmsg-usermsg').html("A operação foi concluida com sucesso.<br> O cliente " + {{ cliente.clinum }} + " foi apagado com sucesso");
+                        var okbutton = $('#errmsg-button');
+                        okbutton.removeClass('btn-danger').addClass('btn-success');
+                        okbutton.unbind().click(function(e){
+                            e.preventDefault();
+                            window.location = "/clientes" + "?auth=" + tokenValue;
+                        });
+                        $('#errmsg-dialog').modal('show');
+                    } else {
+                        $('#errmsg-button').unbind();
+                        $('#errmsg-cancel').addClass("hidden");
+                        window.location.replace('/login');
+                    }
+                },
+                error: function (result) {
+                    console.log("ERRO!");
+                    $('#errmsg-header').html("Erro");
+                    $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
+                    var okbutton = $('#errmsg-button');
+                    okbutton.removeClass('btn-success').addClass('btn-danger');
+                    okbutton.unbind();
+                    $('#errmsg-cancel').addClass("hidden");
                     $('#errmsg-dialog').modal('show');
-                } else {
-                    window.location.replace('/login');
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                $('#errmsg-header').html("Erro");
-                $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
-                $('#errmsg-button').toggleClass('btn-success btn-danger');
-                $('#errmsg-button').toggleClass('btn-info btn-danger');
-                $('#errmsg-dialog').modal('show');
-            }
+            });
         });
+        $('#errmsg-dialog').modal('show');
     }
+
 </script>

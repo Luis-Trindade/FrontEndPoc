@@ -7,7 +7,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('simul');
+    res.render('simul',{
+        nav_to_disable: "nav_simul"
+    });
 });
 
 module.exports = router;
