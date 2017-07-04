@@ -1,44 +1,39 @@
+var tokenValue = sessionStorage.getItem("token");
+var mapaUrl = '/api/clientes/mapas/volnegocio' + "?auth=" + tokenValue;
 
-Morris.Bar({
+var barChart = Morris.Bar({
     element: 'morris-bar-chart',
     data: [
-     {
-        y: '2010',
-        a: 30,
-        b: 60
-     }, {
-        y: '2011',
-        a: 100,
-        b: 90
-    }, {
-        y: '2012',
-        a: 75,
-        b: 65
-    }, {
-        y: '2013',
-        a: 50,
-        b: 40
-    }, {
-        y: '2014',
-        a: 75,
-        b: 65
-    }, {
-        y: '2015',
-        a: 50,
-        b: 40
-    }, {
-        y: '2016',
-        a: 75,
-        b: 65
-    }, {
-        y: '2017',
-        a: 100,
-        b: 90
-    }],
-    xkey: 'y',
-    ykeys: ['a', 'b'],
+        {
+            ano: null,
+            numcto: null,
+            numprp: null
+        }],
+    xkey: 'ano',
+    ykeys: ['numcto', 'numprp'],
     labels: ['Propostas', 'Contratos'],
     hideHover: 'auto',
     resize: true
 });
+
+
+$.ajax({
+    url: mapaUrl,
+    method: 'GET',
+    cache: false,
+    success: function (result) {
+        console.log("SUCESSO");
+        if(result){
+            console.log(result);
+            barChart.setData(result);
+        } else {
+            console.log("ERRO!");
+        }
+    },
+    error: function (result) {
+        console.log("ERRO!");
+    }
+});
+
+
 

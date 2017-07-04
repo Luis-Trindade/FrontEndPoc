@@ -109,4 +109,15 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.get('/mapas/:nomemapa', function(req, res, next){
+    var restUrlMapas = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/mapas/' + req.params.nomemapa;
+    restRequest.getRestRequest(restUrlMapas, function (err, resultados) {
+        if(err) { console.log(err); res.json(null); return; }
+        res.json(resultados);
+    });
+    //res.json(resposta);
+
+});
+
+
 module.exports = router;
