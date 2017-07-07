@@ -4,6 +4,10 @@
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">Clientes</li>
+        </ul>
         <div class="panel panel-primary">
             <div class="panel-heading panel-heading-audaxys">
                 <h4>Clientes
@@ -14,10 +18,7 @@
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <ul class="breadcrumb">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Clientes</li>
-                </ul>
+
                 <div class="form-inline row">
                     <div class="form-group">
                         <!--<label for="search">Pesquisa</label>
@@ -82,3 +83,130 @@
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
+
+{{#section 'scripts'}}
+    <!-- DataTables JavaScript -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+{{/section}}
+
+{{#section 'footer'}}
+    <script>
+        $(document).ready(function() {
+        var table = $('#dataTables-clientes').DataTable({
+        serverSide: true,
+        ajax: {
+            url: '/api/clientes',
+            type: 'GET',
+            data: function ( d ) {
+                var e = document.getElementById('cod_restricao');
+                d.restricao = e.options[e.selectedIndex].text;
+            }
+        },
+        columns: [
+        {{#each tblColumns }}
+            { data: '{{ this }}' {{#unless @first }} , defaultContent: '' {{/unless}} } {{#unless @last}}, {{/unless}}
+        {{/each}}
+        ],
+        searching: true,
+        paging: true,
+        lengthChange: false,
+        pageLength: 15,
+        responsive: true,
+        dom: '<"toolbar">frtip',
+            initComplete: function(){
+            $("div.toolbar").prepend($("#toolbar_html"));
+            },
+        language: {
+        url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese.json'
+        }
+        });
+        $('#dataTables-clientes tbody').on('click', 'tr', function () {
+            var table = $('#dataTables-clientes').DataTable();
+            console.log(table.row(this).data().clinum);
+            var tokenValue = sessionStorage.getItem("token");
+            window.location = "cliente/" + table.row(this).data().clinum + "?auth=" + tokenValue
+            } );
+        });
+
+
+        window.Parsley.addValidator('validanif', {
+            validateString: function(value) {
+                var tokenValue = sessionStorage.getItem("token");
+                var validaNifUrl = '/api/clientes/valida_nif?nif=' + value + "&auth=" + tokenValue;
+                var isValid;
+                $.ajax({
+                    type: 'GET',
+                    url: validaNifUrl,
+                    async: false,
+                    success: function (result) {
+                        console.log(result);
+                        isValid = true;
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            },
+            messages: {
+                'pt-pt': 'Este NIF é inválido',
+                'en': 'Invalid fiscal number'
+            }
+        });
+
+        $(document).ready(function() {
+
+            var frm = $('#modal_form');
+            frm.parsley({
+                /*successClass: "has-success",*/
+                errorClass: "has-error",
+                classHandler: function(el) {
+                    return el.$element.closest("div");
+                },
+                errorsWrapper: "<span class='help-block'></span>",
+                errorTemplate: "<span></span>"
+            });
+            // bind 'myForm' and provide a simple callback function
+            $('#modal_submit').unbind().click(function () {
+                var tokenValue = sessionStorage.getItem("token");
+                var urlWithAuth = frm.attr('action') + "?auth=" + tokenValue;
+                if(frm.parsley().validate()) {
+                    $('#adicionaCliente').modal('hide');
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: urlWithAuth,
+                        data: frm.serialize(),
+                        cache: false,
+                        success: function (result) {
+                            console.log(result);
+                            if(result.client){
+                                $('#errmsg-header').html("Sucesso");
+                                $('#errmsg-usermsg').html("A operação foi concluida com sucesso. " + {{{ mensagem_sucesso_modal }}});
+                                $('#errmsg-button').removeClass('btn-danger').addClass('btn-success');
+                                $('#errmsg-button').unbind().click(function(e){
+                                    e.preventDefault();
+                                    window.location = {{{ sucess_follow_link }}} + "?auth=" + tokenValue;
+                                });
+                                $('#errmsg-dialog').modal('show');
+                            } else {
+                                window.location.replace('/login');
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                            $('#errmsg-header').html("Erro");
+                            $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
+                            $('#errmsg-button').removeClass('btn-success').addClass('btn-danger');
+                            $('#errmsg-dialog').modal('show');
+                        }
+                    });
+
+                }
+            });
+        });
+    </script>
+{{/section}}
+

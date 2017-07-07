@@ -1,4 +1,6 @@
-
+<ul class="breadcrumb">
+    <li class="active">Home</li>
+</ul>
 <div class="col-lg-12">
     <div class="panel panel-primary">
         <div class="panel-heading panel-heading-audaxys">
@@ -29,6 +31,13 @@
         </div>
     </div>
 </div>
+
+{{#section 'scripts'}}
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <script src="../js/morris-{{ ficheiro_graficos }}.js"></script>
+{{/section}}
 
 
 

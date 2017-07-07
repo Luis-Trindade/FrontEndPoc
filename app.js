@@ -16,6 +16,7 @@ var simul = require('./routes/simul');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
 var apiclientes = require('./routes/apiclientes');
+var apicontra = require('./routes/apicontra');
 
 var app = express();
 
@@ -28,6 +29,12 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 hbs.registerHelper('isEqual', function (expectedValue, value) {
     return value === expectedValue;
+});
+
+hbs.registerHelper('section', function(name, options){
+        if(!this._sections) this._sections = {};
+        this._sections[name] = options.fn(this);
+        return null;
 });
 
 // uncomment after placing your favicon in /public
@@ -45,7 +52,7 @@ app.use('/login', login);
 app.use('/logout',logout);
 // para datatables api -> faz o bridge para o lease api
 app.use('/api/clientes', apiclientes);
-
+app.use('/api/contra', apicontra);
 
 app.use('/clientes', auth.authenticate(), clientes);
 app.use('/cliente',auth.authenticate(),cliente);

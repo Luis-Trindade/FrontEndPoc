@@ -14,13 +14,9 @@ router.get('/', function(req, res, next) {
     var context = {
         modal_title: "Adicionar Cliente",
         modal_id: "adicionaCliente",
-        temTabelas: "Sim",
-        idtabela: "dataTables-clientes",
         tabledblhref: "cliente",
         dataTableUrl: "/api/clientes",
         tblColumns: [ "clinum", "clinom", "clitlx", "clitel", "clinfis" ],
-        cod_select: "cod_restricao",
-        temModal: "Sim",
         submit_method: "POST",
         submit_action: "clientes",
         mensagem_sucesso_modal: "'Foi registado o cliente número ' + result.client.clinum",
@@ -122,7 +118,9 @@ router.post('/', function(req, res, next) {
     registoCliente.client = client;
     client.clitcli = req.body.clitcli;
     if(req.body.clitcli == 'P'){
-        restocliente.datanascimento = req.body.datanascimento;
+        if(req.body.datanascimento) {
+            restocliente.datanascimento = req.body.datanascimento.toString().substr(8, 2) + req.body.datanascimento.toString().substr(5, 2) + req.body.datanascimento.toString().substr(0, 4);
+        }
         registoCliente.restocliente = restocliente;
     }
     var restUrlRegCliente = 'http://' + cfg.lease_rest_host + ':'+ cfg.lease_rest_port + '/lease/api/client';

@@ -1,7 +1,13 @@
 {{> modal_clientes }}
 {{> modal_dialog }}
 <div class="row">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/clientes">Clientes</a></li>
+        <li class="active">{{cliente.clinum}}</li>
+    </ul>
     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+
         <div class="panel panel-primary">
             <div class="panel-heading panel-heading-audaxys" style="min-height: 70px">
                 <h4>Cliente
@@ -101,45 +107,16 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {{#each contratos}}
                         <tr class="odd gradeX">
-                            <td>23975</td>
-                            <td>23/06/2010</td>
-                            <td>36</td>
-                            <td>16567,00</td>
+                            <td>{{ ctonum }}</td>
+                            <td>{{ cto2dat }}</td>
+                            <td>{{ ctopraz }}</td>
+                            <td>{{ ctotcon }}</td>
                         </tr>
-                        <tr class="odd gradeX">
-                            <td>23976</td>
-                            <td>25/06/2009</td>
-                            <td>10</td>
-                            <td>5600,00</td>
-                        </tr>
-                        <tr class="odd gradeX">
-                            <td>23000</td>
-                            <td>23/06/2008</td>
-                            <td>68</td>
-                            <td>21568,00</td>
-                        </tr>
-                        <tr class="odd gradeX">
-                            <td>23982</td>
-                            <td>23/06/2010</td>
-                            <td>46</td>
-                            <td>9995,00</td>
-                        </tr>
+                    {{/each}}
                     </tbody>
                 </table>
-                <nav aria-label="...">
-                    <ul class="pagination pagination-sm">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Seguinte</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
@@ -207,3 +184,117 @@
     }
 
 </script>
+
+{{#section 'scripts'}}
+    <!-- DataTables JavaScript -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+    <script src="../js/morris-{{ ficheiro_graficos }}.js"></script>
+{{/section}}
+
+{{#section 'footer'}}
+    <script>
+        $(document).ready(function() {
+        var table = $('#dataTables-contratos').DataTable({
+            serverSide: true,
+            ajax: {
+            url: '{{{ dataTableUrl }}}',
+            type: 'GET'
+            },
+            columns: [
+            {{#each tblColumns }}
+                { data: '{{ this }}' {{#unless @first }} , defaultContent: '' {{/unless}} } {{#unless @last}}, {{/unless}}
+            {{/each}}
+            ],
+            searching: false,
+            paging: true,
+            lengthChange: false,
+            pageLength: 4,
+            responsive: true,
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese.json'
+            }
+        });
+        });
+
+        window.Parsley.addValidator('validanif', {
+            validateString: function(value) {
+                var tokenValue = sessionStorage.getItem("token");
+                var validaNifUrl = '/api/clientes/valida_nif?nif=' + value + "&auth=" + tokenValue;
+                var isValid;
+                $.ajax({
+                    type: 'GET',
+                    url: validaNifUrl,
+                    async: false,
+                    success: function (result) {
+                        console.log(result);
+                        isValid = true;
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            },
+            messages: {
+                'pt-pt': 'Este NIF é inválido',
+                'en': 'Invalid fiscal number'
+            }
+        });
+
+        $(document).ready(function() {
+
+            var frm = $('#modal_form');
+            frm.parsley({
+                errorClass: "has-error",
+                classHandler: function(el) {
+                    return el.$element.closest("div");
+                },
+                errorsWrapper: "<span class='help-block'></span>",
+                errorTemplate: "<span></span>"
+            });
+            // bind 'myForm' and provide a simple callback function
+            $('#modal_submit').unbind().click(function () {
+                var tokenValue = sessionStorage.getItem("token");
+                var urlWithAuth = frm.attr('action') + "?auth=" + tokenValue;
+                if(frm.parsley().validate()) {
+                    $('#modificaCliente').modal('hide');
+                    $.ajax({
+                        type: frm.attr('method'),
+                        url: urlWithAuth,
+                        data: frm.serialize(),
+                        cache: false,
+                        success: function (result) {
+                            console.log(result);
+                            if(result.client){
+                                $('#errmsg-header').html("Sucesso");
+                                $('#errmsg-usermsg').html("A operação foi concluida com sucesso. " + {{{ mensagem_sucesso_modal }}});
+                                $('#errmsg-button').removeClass('btn-danger').addClass('btn-success');
+                                $('#errmsg-button').unbind().click(function(e){
+                                    e.preventDefault();
+                                    window.location = {{{ sucess_follow_link }}} + "?auth=" + tokenValue;
+                                });
+                                $('#errmsg-dialog').modal('show');
+                            } else {
+                                window.location.replace('/login');
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                            $('#errmsg-header').html("Erro");
+                            $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
+                            $('#errmsg-button').removeClass('btn-success').addClass('btn-danger');
+                            $('#errmsg-dialog').modal('show');
+                        }
+                    });
+
+                }
+            });
+        });
+    </script>
+{{/section}}

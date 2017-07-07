@@ -19,12 +19,12 @@ router.get('/:numcliente', function(req, res, next) {
     var context = {
         modal_title: "Modificar Clientes",
         modal_id: "modificaCliente",
-        temModal: "Sim",
         submit_method: "PUT",
         submit_action: "cliente/" + req.params.numcliente,
         mensagem_sucesso_modal: "'Foi modificado o cliente '",
-        sucess_follow_link: "'/clientes'",
-        temGraficos:"Sim",
+        sucess_follow_link: "cliente/" + req.params.numcliente,
+        dataTableUrl: "/api/contra/short?clinum=" + req.params.numcliente,
+        tblColumns: [ "ctonum", "cto2dat", "ctopraz", "ctotcon" ],
         ficheiro_graficos: "pie-dados"
     };
 
@@ -77,7 +77,9 @@ router.get('/:numcliente', function(req, res, next) {
                 cliente.cliwww = results[1].client[0].cliwww;
                 cliente.clitlx = results[1].client[0].clitlx;
                 cliente.clitel = results[1].client[0].clitel;
-                restocliente.datanascimento = results[1].restocliente[0].datanascimento;
+                if(restocliente[0].datanascimento) {
+                    restocliente.datanascimento = results[1].restocliente[0].datanascimento.toString().substr(8, 2) + results[1].restocliente[0].datanascimento.toString().substr(5, 2) + results[1].restocliente[0].datanascimento.toString().substr(0, 4);
+                }
                 cliente.cliehsucursal = false;
                 if (results[1].client[0].cliehsucursal == "S") {
                     cliente.cliehsucursal = true;
@@ -134,7 +136,9 @@ router.put('/:numcliente', function(req, res, next) {
     cliente.clitlx = req.body.clitlx;
     cliente.cliwww = req.body.cliwww;
     cliente.clitel = req.body.clitel;
-    restocliente.datanascimento = req.body.datanascimento;
+    if(req.body.datanascimento) {
+        restocliente.datanascimento = req.body.datanascimento.toString().substr(8, 2) + req.body.datanascimento.toString().substr(5, 2) + req.body.datanascimento.toString().substr(0, 4);
+    }
     if(req.body.cliehsucursal){
         cliente.cliehsucursal = req.body.cliehsucursal;
     } else {

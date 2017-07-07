@@ -52,7 +52,7 @@
     </nav>
 
     <div id="page-wrapper">
-        <br> <br>
+
         {{{ body }}}
     </div>
     <!-- /#page-wrapper -->
@@ -74,62 +74,10 @@
 <!-- Custom Theme JavaScript -->
 <script src="../dist/js/sb-admin-2.js"></script>
 
-{{#if temTabelas}}
-<!-- DataTables JavaScript -->
-<script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
-<script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-<script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
-{{/if}}
+{{{_sections.scripts}}}
 
-{{#if temGraficos}}
-    <!-- Morris Charts JavaScript -->
-    <script src="../vendor/raphael/raphael.min.js"></script>
-    <script src="../vendor/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-{{ ficheiro_graficos }}.js"></script>
-{{/if}}
 
 <script>
-{{#if temTabelas}}
-    $(document).ready(function() {
-        var table = $('#{{idtabela}}').DataTable({
-            serverSide: true,
-            ajax: {
-                url: '{{ dataTableUrl }}',
-                type: 'GET',
-                "data": function ( d ) {
-                    var e = document.getElementById('{{ cod_select }}');
-                    d.restricao = e.options[e.selectedIndex].text;
-                }
-            },
-            columns: [
-                {{#each tblColumns }}
-                { data: '{{ this }}' {{#unless @first }} , defaultContent: '' {{/unless}} } {{#unless @last}}, {{/unless}}
-                {{/each}}
-            ],
-            searching: true,
-            paging: true,
-            lengthChange: false,
-            pageLength: 15,
-            responsive: true,
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese.json'
-            },
-            dom: '<"toolbar">frtip',
-            initComplete: function(){
-                $("div.toolbar").prepend($("#toolbar_html"));
-            }
-        });
-
-        $('#{{idtabela}} tbody').on('dblclick', 'tr', function () {
-            var table = $('#{{idtabela}}').DataTable();
-            console.log(table.row(this).data().clinum);
-            var tokenValue = sessionStorage.getItem("token");
-            window.location = "{{ tabledblhref }}/" + table.row(this).data().clinum + "?auth=" + tokenValue
-        } );
-
-    });
-{{/if}}
-
     function changeCSS(cssFile, cssLinkIndex) {
 
         var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
@@ -141,89 +89,7 @@
 
         document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
     }
-</script>
-{{#if temModal}}
-    <script>
 
-        window.Parsley.addValidator('validanif', {
-            validateString: function(value) {
-                var tokenValue = sessionStorage.getItem("token");
-                var validaNifUrl = '/api/clientes/valida_nif?nif=' + value + "&auth=" + tokenValue;
-                var isValid;
-                $.ajax({
-                    type: 'GET',
-                    url: validaNifUrl,
-                    async: false,
-                    success: function (result) {
-                        console.log(result);
-                        isValid = true;
-                    },
-                    error: function (result) {
-                        console.log(result);
-                        isValid = false;
-                    }
-                });
-                return isValid;
-            },
-            messages: {
-                'pt-pt': 'Este NIF é inválido',
-                'en': 'Invalid fiscal number'
-            }
-        });
-
-        $(document).ready(function() {
-
-            var frm = $('#modal_form');
-            frm.parsley({
-                /*successClass: "has-success",*/
-                errorClass: "has-error",
-                classHandler: function(el) {
-                    return el.$element.closest("div");
-                },
-                errorsWrapper: "<span class='help-block'></span>",
-                errorTemplate: "<span></span>"
-            });
-            // bind 'myForm' and provide a simple callback function
-            $('#modal_submit').unbind().click(function () {
-                var tokenValue = sessionStorage.getItem("token");
-                var urlWithAuth = frm.attr('action') + "?auth=" + tokenValue;
-                if(frm.parsley().validate()) {
-                    $('#{{ modal_id }}').modal('hide');
-                    $.ajax({
-                        type: frm.attr('method'),
-                        url: urlWithAuth,
-                        data: frm.serialize(),
-                        cache: false,
-                        success: function (result) {
-                            console.log(result);
-                            if(result.client){
-                                $('#errmsg-header').html("Sucesso");
-                                $('#errmsg-usermsg').html("A operação foi concluida com sucesso. " + {{{ mensagem_sucesso_modal }}});
-                                $('#errmsg-button').removeClass('btn-danger').addClass('btn-success');
-                                $('#errmsg-button').unbind().click(function(e){
-                                    e.preventDefault();
-                                    window.location = {{{ sucess_follow_link }}} + "?auth=" + tokenValue;
-                                });
-                                $('#errmsg-dialog').modal('show');
-                            } else {
-                                window.location.replace('/login');
-                            }
-                        },
-                        error: function (result) {
-                            console.log(result);
-                            $('#errmsg-header').html("Erro");
-                            $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
-                            $('#errmsg-button').removeClass('btn-success').addClass('btn-danger');
-                            $('#errmsg-dialog').modal('show');
-                        }
-                    });
-
-                }
-            });
-        });
-    </script>
-{{/if}}
-<script>
     $(document).ready(function() {
         $('a').attr('href', function (index, value) {
             if(value=="#"){ return value;}
@@ -240,6 +106,8 @@
     });
 
 </script>
+
+{{{_sections.footer}}}
 
 </body>
 

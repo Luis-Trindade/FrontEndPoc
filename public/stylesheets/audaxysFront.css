@@ -185,3 +185,6 @@ a.disabled {
   background-color: #eee;
 }
 
+#dataTables-clientes tbody tr {
+  cursor: pointer;
+}

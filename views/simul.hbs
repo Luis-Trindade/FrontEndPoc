@@ -1,37 +1,39 @@
-
+{{> modal_cashflow }}
+{{> modal_dialog }}
     <div class="row">
     <div class="col-lg-12">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">Simulação</li>
+        </ul>
         <div class="panel panel-primary">
             <div class="panel-heading panel-heading-audaxys">
                 <h4>Simulador</h4>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <ul class="breadcrumb">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Simulação</li>
-                </ul>
-                <form class="form-horizontal" name="simul_form" id="simul_form" action="" method="POST" data-parsley-validate="" data-parsley-trigger="change">
+
+                <form class="form-horizontal" name="simul_form" id="simul_form" data-parsley-validate="" data-parsley-trigger="change">
 
                     <div class="row field-padding">
                         <label class="col-sm-2">Data Início</label>
                         <div class="col-sm-3">
-                            <input type="date" class="form-control" id="cto2dat" value="" />
+                            <input type="date" class="form-control" id="cto2dat" name="cto2dat" value="{{ today }}" />
                         </div>
                         <label class="col-sm-2">Valor</label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="ctotcon" value="" />
+                            <input type="number" step="0.01" min="0.00" class="form-control" id="ctotcon" name="ctotcon" value="0.00" required/>
                         </div>
                     </div>
 
                     <div class="row field-padding">
                         <label class="col-sm-2">Prazo</label>
                         <div class="col-sm-3">
-                            <input type="number" class="form-control" id="ctopraz" value="" />
+                            <input type="number" min="1" class="form-control" id="ctopraz" name="ctopraz" value="" required onchange="preencheGrupoRendasAuto()"/>
                         </div>
                         <label class="col-sm-2">Período</label>
                         <div class="col-sm-3">
-                            <input type="number" min="1" max="12" class="form-control" id="ctoper" value="" />
+                            <input type="number" min="1" max="12" class="form-control" id="ctoper" name="ctoper" value="" required onchange="preencheGrupoRendasAuto()"/>
                         </div>
                     </div>
 
@@ -39,16 +41,16 @@
                         <label class="col-sm-2">A/P</label>
 <div class="col-sm-3">
                             <label class="radio-inline "><b>Antecipado</b></label>
-                            <input  type="radio" name="ctoap" value="A" required="" checked onchange="">
+                            <input  type="radio" id="ctoap1" name="ctoap" value="A" required="" checked onchange="">
                             <label class="radio-inline "><b>Postecipado</b></label>
-                            <input  type="radio" name="ctoap" value="P"  onchange="">
+                            <input  type="radio" id="ctoap2" name="ctoap" value="P"  onchange="">
 </div>
                         <label class="col-sm-2">IVA</label>
                         <div class="col-sm-3">
                             <select class="form-control" id="ctoiva" name="ctoiva">
-                                <option value="23" selected >23%</option>
-                                <option value="5" selected >5%</option>
-                                <option value="0" selected >0%</option>
+                                {{#each iva}}
+                                    <option value="{{ codigo }}">{{ descricao }}</option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>
@@ -56,11 +58,11 @@
                     <div class="row field-padding">
                         <label class="col-sm-2">Data 1ª renda</label>
                         <div class="col-sm-3">
-                            <input type="date" class="form-control" id="cto1ren" value="" />
+                            <input type="date" class="form-control" id="cto1ren" name="cto1ren" value="{{ today }}"/>
                         </div>
                         <label class="col-sm-2">Juros Diferidos</label>
                         <div class="col-sm-3">
-                            <select class="form-control" id="ctojurdif" name="ctojurdif">
+                            <select class="form-control" id="ctojurdif" name="ctojurdif" onchange="mudaJurosDiferidos()">
                                 <option value="C" selected >Calcula</option>
                                 <option value="S" >Impõe Valor</option>
                                 <option value="N" >Não tem</option>
@@ -71,14 +73,14 @@
                     <div class="row field-padding">
                         <label class="col-sm-2">Dado</label>
                         <div class="col-sm-3">
-                            <select class="form-control" id="ctodado" name="ctodado">
+                            <select class="form-control" id="ctodado" name="ctodado" onchange="mudaTipodeCalculoRendas()">
                                 <option value="T" selected >Taxa</option>
                                 <option value="R" >Rendas</option>
                             </select>
                         </div>
                         <label class="col-sm-2">Valor Juros Diferidos</label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="ctovaljurdif" value="" />
+                            <input type="number" step="0.01" min="0.00" class="form-control" id="ctovaljurdif" name="ctovaljurdif" value="0.00" disabled/>
                         </div>
 
                     </div>
@@ -86,11 +88,11 @@
                     <div class="row field-padding">
                         <label class="col-sm-2">Taxa</label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="ctotxim" value="" />
+                            <input type="number" step="0.01" class="form-control" id="ctotxim" value="" name="ctotxim"/>
                         </div>
 
                     </div>
-                </form>
+
                 <br>
                 <div class="row">
                     <div class="col-sm-7">
@@ -107,32 +109,146 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input class="form-control" type="number" id="qtd1" value="" /></td>
-                                        <td><input class="form-control" type="number" step="0.01" id="valor1" value="" /></td>
-                                        <td><input class="form-control" type="number" step="0.01" id="factor1" value="" /></td>
+                                        <td><input class="form-control" type="number" id="qtd1" name="qtd1" min="1" value="" /></td>
+                                        <td><input class="form-control" type="number" step="0.01" min="0.00" id="valor1" name="valor1" value="" /></td>
+                                        <td><input class="form-control" type="number" step="0.01" min="0.00" id="factor1" name="factor1" value="" /></td>
                                     </tr>
                                     <tr>
-                                        <td><input class="form-control" type="number" id="qtd2" value="" /></td>
-                                        <td><input class="form-control" type="number" step="0.01" id="valor2" value="" /></td>
-                                        <td><input class="form-control" type="number" step="0.01" id="factor2" value="" /></td>
+                                        <td><input class="form-control" type="number" id="qtd2" min="1" value="" name="qtd2" /></td>
+                                        <td><input class="form-control" type="number" step="0.01" min="0.00" id="valor2" name="valor2" value="" /></td>
+                                        <td><input class="form-control" type="number" step="0.01" min="0.00" id="factor2" name="factor2" value="" /></td>
                                     </tr>
                                     <tr>
-                                        <td><input class="form-control" type="number" id="qtd3" value="" /></td>
-                                        <td><input class="form-control" type="number" step="0.01" id="valor3" value="" /></td>
-                                        <td><input class="form-control" type="number" step="0.01" id="factor3" value="" /></td>
+                                        <td><input class="form-control" type="number" id="qtd3" min="1" value="" name="qtd3"/></td>
+                                        <td><input class="form-control" type="number" step="0.01" min="0.00" id="valor3" name="valor3" value="" /></td>
+                                        <td><input class="form-control" type="number" step="0.01" min="0.00" id="factor3" name="factor3" value="" /></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="btn-group-vertical" role="group" aria-label="...">
-                        <button type="button" id="ok_button" class="btn btn-info" value="validate">OK</button>
-                        <button type="button" id="calc_button" class="btn btn-default" >Calcula</button>
-                        <button type="button" id="cashflow_button" class="btn btn-default" >CashFlow</button>
-                        <button type="button" id="modifica_button" class="btn btn-default" >Modifica</button>
+                        <button type="button" id="calc_button" class="btn btn-info" value="validate">Calcula</button>
+                        <button type="button" id="cashflow_button" class="btn btn-default" data-toggle="modal"
+                                data-target="#cashflow-dialog">CashFlow</button>
                     </div>
                 </div>
-        </div>
+                </form>
+            </div>
         </div>
     </div>
     </div>
+<script>
+    function mudaJurosDiferidos(){
+        var val1 = $('#ctojurdif option:selected').val();
+        if(val1 == "C" || val1 == "N"){
+            $('#ctovaljurdif').val(0.00);
+            $('#ctovaljurdif').prop('disabled', true);
+        } else {
+            $('#ctovaljurdif').prop('disabled', false);
+        }
+    }
+    function mudaTipodeCalculoRendas(){
+        var val1 = $('#ctodado option:selected').val();
+        if(val1 == "R"){
+            $('#ctotxim').prop('disabled', true);
+        } else {
+            $('#ctotxim').prop('disabled', false);
+        }
+
+    }
+    function preencheGrupoRendasAuto(){
+        var prazo = $('#ctopraz').val();
+        var periodo = $('#ctoper').val();
+        if(prazo > 0 && periodo > 0){
+            var qtd1 = $('#qtd1').val();
+            if(!qtd1){
+                var totalRendas = prazo/periodo;
+                $('#qtd1').val(totalRendas);
+                $('#valor1').val(0);
+                $('#factor1').val(1);
+            }
+        }
+    }
+
+</script>
+
+    {{#section 'footer'}}
+<script>
+        $(document).ready(function() {
+
+            var frm = $('#simul_form');
+            frm.parsley({
+                errorClass: "has-error",
+                classHandler: function(el) {
+                    return el.$element.closest("div");
+                },
+                errorsWrapper: "<span class='help-block'></span>",
+                errorTemplate: "<span></span>"
+            });
+
+            $('#calc_button').unbind().click(function () {
+                var tokenValue = sessionStorage.getItem("token");
+                var urlWithAuth = "/simul?auth=" + tokenValue;
+                if(frm.parsley().validate()) {
+                    $.ajax({
+                        type: 'POST',
+                        url: urlWithAuth,
+                        data: frm.serialize(),
+                        cache: false,
+                        success: function (result) {
+                            if(result.simul) {
+                                console.log(result.simul.ctoap);
+                                $('#cto2dat').val(result.simul.cto2dat);
+                                $('#ctotcon').val(result.simul.ctotcon);
+                                $('#ctopraz').val(result.simul.ctopraz);
+                                $('#ctoper').val(result.simul.ctoper);
+                                $('input:radio[id=ctoap1]').attr('checked', false);
+                                $('input:radio[id=ctoap2]').attr('checked', false);
+                                $('input:radio[name=ctoap][value=' + result.simul.ctoap + ']').attr('checked', true);
+                                $('#ctoiva option').prop('selected', false);
+                                $("#ctoiva option[value='" + result.simul.ctoiva + "']").prop('selected', true);
+                                $('#cto1ren').val(result.simul.cto1ren);
+                                $('#ctotcon').val(result.simul.ctotcon);
+                                $('#ctojurdif option').prop('selected', false);
+                                $("#ctojurdif option[value='" + result.simul.ctojurdif + "']").prop('selected', true);
+
+                                $('#ctovaljurdif').val(result.simul.ctovaljurdif);
+                                $('#ctotxim').val(result.simul.ctotxim);
+                                $("#ctodado option").prop('selected', false);
+                                $("#ctodado option[value='" + result.simul.ctodado + "']").prop('selected', true);
+
+                                $('#qtd1').val(result.gruposrendas[0].quantidade);
+                                $('#valor1').val(result.gruposrendas[0].valor);
+                                $('#factor1').val(result.gruposrendas[0].factor);
+                                $('#qtd2').val(result.gruposrendas[1].quantidade);
+                                $('#valor2').val(result.gruposrendas[1].valor);
+                                $('#factor2').val(result.gruposrendas[1].factor);
+                                $('#qtd3').val(result.gruposrendas[2].quantidade);
+                                $('#valor3').val(result.gruposrendas[2].valor);
+                                $('#factor3').val(result.gruposrendas[2].factor);
+
+                                $("#cashflow-table > tbody").html("");
+                                var trHTML = '';
+                                $.each(result.cashflow, function (i, item) {
+                                    trHTML += '<tr><td>' + item.datainiper + '</td><td>' + item.capinicio + '</td><td>' + item.valor + '</td><td>'
+                                            + item.capital + '</td><td>' + item.juro + '</td></tr>';
+                                });
+                                $('#cashflow-table').append(trHTML);
+                            } else {
+                                window.location.replace('/login');
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                            $('#errmsg-header').html("Erro");
+                            $('#errmsg-usermsg').html("Houve um erro na operação: " + result.responseText);
+                            $('#errmsg-button').removeClass('btn-success').addClass('btn-danger');
+                            $('#errmsg-dialog').modal('show');
+                        }
+                    });
+                }
+            });
+        });
+</script>
+    {{/section}}
