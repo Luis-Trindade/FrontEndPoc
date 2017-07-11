@@ -77,7 +77,7 @@ router.get('/:numcliente', function(req, res, next) {
                 cliente.cliwww = results[1].client[0].cliwww;
                 cliente.clitlx = results[1].client[0].clitlx;
                 cliente.clitel = results[1].client[0].clitel;
-                if(restocliente[0].datanascimento) {
+                if(results[1].restocliente[0].datanascimento) {
                     restocliente.datanascimento = results[1].restocliente[0].datanascimento.toString().substr(8, 2) + results[1].restocliente[0].datanascimento.toString().substr(5, 2) + results[1].restocliente[0].datanascimento.toString().substr(0, 4);
                 }
                 cliente.cliehsucursal = false;

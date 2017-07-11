@@ -88,7 +88,7 @@
                     <div class="row field-padding">
                         <label class="col-sm-2">Taxa</label>
                         <div class="col-sm-3">
-                            <input type="number" step="0.01" class="form-control" id="ctotxim" value="" name="ctotxim"/>
+                            <input type="number" step="0.0001" class="form-control" id="ctotxim" value="" name="ctotxim"/>
                         </div>
 
                     </div>
@@ -165,7 +165,6 @@
             if(!qtd1){
                 var totalRendas = prazo/periodo;
                 $('#qtd1').val(totalRendas);
-                $('#valor1').val(0);
                 $('#factor1').val(1);
             }
         }
