@@ -78,7 +78,7 @@ router.get('/:numcliente', function(req, res, next) {
                 cliente.clitlx = results[1].client[0].clitlx;
                 cliente.clitel = results[1].client[0].clitel;
                 if(results[1].restocliente[0].datanascimento) {
-                    restocliente.datanascimento = results[1].restocliente[0].datanascimento.toString().substr(8, 2) + results[1].restocliente[0].datanascimento.toString().substr(5, 2) + results[1].restocliente[0].datanascimento.toString().substr(0, 4);
+                    restocliente.datanascimento = results[1].restocliente[0].datanascimento;
                 }
                 cliente.cliehsucursal = false;
                 if (results[1].client[0].cliehsucursal == "S") {
@@ -92,7 +92,6 @@ router.get('/:numcliente', function(req, res, next) {
                 if (results[1].client[0].clibanco == "S") {
                     cliente.clibanco = true;
                 }
-
                 context.cliente = cliente;
                 context.restocliente = restocliente;
                 context.paises = results[0];

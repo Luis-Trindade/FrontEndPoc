@@ -1,4 +1,5 @@
 {{> modal_cashflow }}
+{{> modal_cashflow_grafico }}
 {{> modal_dialog }}
     <div class="row">
     <div class="col-lg-12">
@@ -131,6 +132,8 @@
                         <button type="button" id="calc_button" class="btn btn-info" value="validate">Calcula</button>
                         <button type="button" id="cashflow_button" class="btn btn-default" data-toggle="modal"
                                 data-target="#cashflow-dialog">CashFlow</button>
+                        <button type="button" id="cfgrafico_button" class="btn btn-default" data-toggle="modal"
+                                data-target="#cfgrafico-dialog">Gráfico</button>
                     </div>
                 </div>
                 </form>
@@ -171,9 +174,33 @@
     }
 
 </script>
+{{#section 'scripts'}}
+    <!-- Morris Charts JavaScript -->
+    <script src="../vendor/raphael/raphael.min.js"></script>
+    <script src="../vendor/morrisjs/morris.min.js"></script>
+{{/section}}
 
     {{#section 'footer'}}
 <script>
+    var chartData = [  ];
+
+
+    $('#cfgrafico-dialog').on('shown.bs.modal', function () { //listen for user to open modal
+        $(function () {
+            $( "#morris-area-chart" ).empty(); //clear chart so it doesn't create multiple if multiple clicks
+            // Create a Bar Chart with Morris
+            var areaChart = Morris.Area({
+                element: 'morris-area-chart',
+                data: chartData,
+                xkey: 'y',
+                ykeys: ['capital', 'juro', 'imposto'],
+                labels: ['Capital', 'Juro', 'Imposto' ],
+                resize: false
+            });
+
+        });
+    });
+
         $(document).ready(function() {
 
             var frm = $('#simul_form');
@@ -197,7 +224,6 @@
                         cache: false,
                         success: function (result) {
                             if(result.simul) {
-                                console.log(result.simul.ctoap);
                                 $('#cto2dat').val(result.simul.cto2dat);
                                 $('#ctotcon').val(result.simul.ctotcon);
                                 $('#ctopraz').val(result.simul.ctopraz);
@@ -229,11 +255,21 @@
 
                                 $("#cashflow-table > tbody").html("");
                                 var trHTML = '';
+                                chartData.length = 0;
                                 $.each(result.cashflow, function (i, item) {
                                     trHTML += '<tr><td>' + item.datainiper + '</td><td>' + item.capinicio + '</td><td>' + item.valor + '</td><td>'
                                             + item.capital + '</td><td>' + item.juro + '</td></tr>';
+                                    var chartElement = {
+                                        y: i+1,
+                                        capital: result.cashflow[i].capital,
+                                        juro: result.cashflow[i].juro,
+                                        imposto: result.cashflow[i].imposto
+                                    };
+                                    chartData.push(chartElement);
                                 });
                                 $('#cashflow-table').append(trHTML);
+                                console.log(chartData);
+                                areaChart.setData(chartData);
                             } else {
                                 window.location.replace('/login');
                             }

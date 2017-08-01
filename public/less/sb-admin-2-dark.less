@@ -4,7 +4,7 @@
 // Global Styles
 
 body {
-    background-color: @gray-lightest;
+    background-color: darken(@gray-lightest,20%);
 }
 
 // Wrappers
@@ -16,7 +16,7 @@ body {
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
-    background-color: white;
+    background-color: darken(white,20%);
 }
 
 @media(min-width:768px) {
@@ -104,10 +104,10 @@ body {
 }
 
 .sidebar ul li {
-    border-bottom: 1px solid darken(@gray-lightest, 6.5%);
+    border-bottom: 1px solid darken(@gray-lightest, 26.5%);
     a {
         &.active {
-            background-color: @gray-lighter;
+            background-color: darken(@gray-lighter,20%);
         }
     }
 }
@@ -161,23 +161,23 @@ body {
 }
 
 .btn-primary.btn-outline {
-    color: @brand-primary;
+    color: darken(@brand-primary,20%);
 }
 
 .btn-success.btn-outline {
-    color: @brand-success;
+    color: darken(@brand-success,20%);
 }
 
 .btn-info.btn-outline {
-    color: @brand-info;
+    color: darken(@brand-info,20%);
 }
 
 .btn-warning.btn-outline {
-    color: @brand-warning;
+    color: darken(@brand-warning,20%);
 }
 
 .btn-danger.btn-outline {
-    color: @brand-danger;
+    color: darken(@brand-danger,20%);
 }
 
 .btn-primary.btn-outline:hover,
@@ -185,7 +185,7 @@ body {
 .btn-info.btn-outline:hover,
 .btn-warning.btn-outline:hover,
 .btn-danger.btn-outline:hover {
-    color: white;
+    color: darken(white,20%);
 }
 
 // Chat Widget
@@ -199,7 +199,7 @@ body {
 .chat li {
     margin-bottom: 10px;
     padding-bottom: 5px;
-    border-bottom: 1px dotted @gray-light;
+    border-bottom: 1px dotted darken(@gray-light,20%);
 }
 
 .chat li.left .chat-body {
@@ -269,7 +269,7 @@ table.dataTable thead .sorting:after {
     content: "\f0dc";
     float: right;
     font-family: fontawesome;
-    color: rgba(50,50,50,.5);
+    color: darken(rgba(50,50,50,.5),20%);
 }
 
 // Circle Buttons 
@@ -322,46 +322,46 @@ table.dataTable thead .sorting:after {
 }
 
 .panel-green {
-    border-color: @brand-success;
+    border-color: darken(@brand-success,20%);
     > .panel-heading {
-        border-color: @brand-success;
+        border-color: darken(@brand-success,20%);
         color: white;
-        background-color: @brand-success;
+        background-color: darken(@brand-success,20%);
     }
     > a {
         color: @brand-success;
         &:hover {
-            color: darken(@brand-success, 15%);
+            color: darken(@brand-success, 35%);
         }
     }
 }
 
 .panel-red {
-    border-color: @brand-danger;
+    border-color: darken(@brand-danger,20%);
     > .panel-heading {
-        border-color: @brand-danger;
-        color: white;
-        background-color: @brand-danger;
+        border-color: darken(@brand-danger,20%);
+        color: darken(white,20%);
+        background-color: darken(@brand-danger,20%);
     }
     > a {
-        color: @brand-danger;
+        color: darken(@brand-danger,20%);
         &:hover {
-            color: darken(@brand-danger, 15%);
+            color: darken(@brand-danger, 35%);
         }
     }
 }
 
 .panel-yellow {
-    border-color: @brand-warning;
+    border-color: darken(@brand-warning,20%);
     > .panel-heading {
-        border-color: @brand-warning;
-        color: white;
-        background-color: @brand-warning;
+        border-color: darken(@brand-warning,20%);
+        color: darken(white,20%);
+        background-color: darken(@brand-warning,20%);
     }
     > a {
-        color: @brand-warning;
+        color: darken(@brand-warning,20%);
         &:hover {
-            color: darken(@brand-warning, 15%);
+            color: darken(@brand-warning, 35%);
         }
     }
 }
@@ -381,7 +381,7 @@ table.dataTable thead .sorting:after {
     left: 50%;
     width: 3px;
     margin-left: -1.5px;
-    background-color: #eeeeee;
+    background-color: darken(#eeeeee,20%);
 }
 
 .timeline > li {
@@ -456,8 +456,8 @@ table.dataTable thead .sorting:after {
     text-align: center;
     font-size: 1.4em;
     line-height: 50px;
-    color: #fff;
-    background-color: #999999;
+    color: darken(#fff,20%);
+    background-color: darken(#999999,20%);
 }
 
 .timeline > li.timeline-inverted > .timeline-panel {
@@ -479,23 +479,23 @@ table.dataTable thead .sorting:after {
 }
 
 .timeline-badge.primary {
-    background-color: #2e6da4 !important;
+    background-color: darken(#2e6da4,20%) !important;
 }
 
 .timeline-badge.success {
-    background-color: #3f903f !important;
+    background-color: darken(#3f903f,20%) !important;
 }
 
 .timeline-badge.warning {
-    background-color: #f0ad4e !important;
+    background-color: darken(#f0ad4e,20%) !important;
 }
 
 .timeline-badge.danger {
-    background-color: #d9534f !important;
+    background-color: darken(#d9534f,20%) !important;
 }
 
 .timeline-badge.info {
-    background-color: #5bc0de !important;
+    background-color: darken(#5bc0de,20%) !important;
 }
 
 .timeline-title {
